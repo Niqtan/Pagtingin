@@ -34,11 +34,11 @@ image here
 
 
 ## Flashing on the ESP32
-- 1. Connect the ESP32 WROOM to the computer using a cable
-- 2. Install the development board for the ESP32 on the Arduino IDE.
-- 3. Select ESP32 DEV BOARD 
-- 4. Select the COM Port on the Arduino IDE
-- 5. Click compile and upload
+1.  Connect the ESP32 WROOM to the computer using a cable
+2.  Install the development board for the ESP32 on the Arduino IDE.
+3.  Select ESP32 DEV BOARD 
+4. Select the COM Port on the Arduino IDE
+5. Click compile and upload
 
 ## Learning Outcomes
 
