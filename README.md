@@ -28,7 +28,6 @@ image here
 - 1 * Active Buzzer
 - 1 * LM358 Operational Amplifier
 - 1 * 2N2222 NPN Transistor
-- 1 * USB to Dual 9V Battery
 - 1 * 1MΩ Resistor, 2 * 10KΩ Resistor  
 - A bundle of jumper wires
 
