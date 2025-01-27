@@ -7,13 +7,13 @@ The Pagtingin obstacle detecting glasses aims to help visually impaired people t
 
 Hence, Pagtingin aims to aid this limitation and ensure a safe journey of navigation. Whether indoors or outdoors, the device will be able to identify potential hazards through an ultrasonic sensor and send real-time audio or tactile feedback, which helps users to be much more confident and safe in the user's day-to-day lives.
 
-![alt text]([[https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png](https://github.com/Niqtan/Pagtingin/blob/main/download.jpeg](https://github.com/Niqtan/Pagtingin/blob/main/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park.jpg) "Blind person walking happily")
+![Blind person walking happily](https://github.com/Niqtan/Pagtingin/blob/main/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park.jpg)
 
 ## Contents of the Project
 
 In my proposed system, an ultrasonic sensor is placed in front of the user's glasses. The ultrasonic sensor will provide information to the glasses before audio or tactile feedback will be sent to the user.
 
-![alt text]([https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png](https://github.com/Niqtan/Pagtingin/blob/main/download.jpeg "Ultrasonic sensor detection")
+![Ultrasonic sensor detection](https://github.com/Niqtan/Pagtingin/blob/main/download.jpeg)
 
 ## How does it work?
 
