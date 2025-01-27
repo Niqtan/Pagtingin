@@ -33,9 +33,9 @@ image here
 
 
 ## Flashing on the ESP32
-1.  Connect the ESP32 WROOM to the computer using a cable
-2.  Install the development board for the ESP32 on the Arduino IDE.
-3.  Select ESP32 DEV BOARD 
+1.  Connect the Raspberry Pi Pico to the computer using a cable
+2.  Install the development board for the Raspberry Pi Pico on the Arduino IDE.
+3.  Select Raspberry Pi PIco Development Board 
 4. Select the COM Port on the Arduino IDE
 5. Click compile and upload
 
@@ -43,7 +43,7 @@ image here
 
 By the end of the project, I wish to strenghthen my understanding of these topics:
 
-- Understand the basics of programming in embedded systems, specifically in micropython and alternative ways of programming a microcontroller
+- Understand the basics of programming in embedded systems, specifically in the Arduino IDE and alternative ways of programming a microcontroller
 - Apply the basics of circuit theory such as op amps, transistors, and electrical circuit applications.
 - Experience how to make a device with an embedded system, and the ergonomics behind them.
 
