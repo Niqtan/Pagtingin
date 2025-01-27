@@ -21,14 +21,14 @@ After the detection phase, the glasses will use the signal in order to release a
 image here
 
 ## Parts Needed
-- 1 * ESP32 Development Board WROOM
+- 1 * Raspberry Pi Pico 
 - 1 * 9V Alkaline Battery
 - 1 * HR-SR04 Ultrasonic distance sensor
 - 1 * Short Solderless Breadboard
 - 1 * Active Buzzer
 - 1 * LM358 Operational Amplifier
 - 1 * 2N2222 NPN Transistor
-- 1 * 1MΩ Resistor, 2 * 10KΩ Resistor  
+- 1 * 1MΩ Resistor, 4 * 10KΩ Resistor  
 - A bundle of jumper wires
 
 
