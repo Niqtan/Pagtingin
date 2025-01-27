@@ -3,7 +3,9 @@
 
 ## Project Aims
 
-Pagtingin aims to help visually impaired people to easily detect obstacles in front of them through innovative technology. By using an ultrasonic sensor and real-time feedback, Pagtingin ensures a safe journey of navigation. Whether indoors or outdoors, the device will be able to identify potential hazards and send real-time audio or tactile feedback, which helps users to be much more confident and safe in their day-to-day lives.
+The Pagtingin obstacle detecting glasses aims to help visually impaired people to easily detect obstacles in front of them through innovative glasses. While traditional walking sticks indeed help in detecting obstacles on the ground, they often fail to identify objects at chest or head level, such as low-hanging branches, open cabinets, or protruding signs. 
+
+Hence, Pagtingin aims to aid this limitation and ensure a safe journey of navigation. Whether indoors or outdoors, the device will be able to identify potential hazards through an ultrasonic sensor and send real-time audio or tactile feedback, which helps users to be much more confident and safe in the user's day-to-day lives.
 
 ## Contents of the Project
 
