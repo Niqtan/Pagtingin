@@ -24,7 +24,7 @@ Whenever the glasses detects an obstacle in front of the user within the 30 cent
 After the detection phase, the glasses will use the signal in order to release an audio or tactile feedback relative to the distance in cm of the ultrasonic sensor to an obstacle.
 
 ## Circuit Diagram
-image here
+![KiCad circuit diagram](https://github.com/Niqtan/Pagtingin/blob/main/Screenshot%202025-01-28%20172207.png)
 
 ## Parts Needed
 - 1 * Raspberry Pi Pico 
