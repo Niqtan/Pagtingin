@@ -38,7 +38,7 @@ After the detection phase, the glasses will use the signal in order to release a
 - A bundle of jumper wires
 
 
-## Flashing on the ESP32
+## Flashing on the Raspberry Pi Pico
 1.  Connect the Raspberry Pi Pico to the computer using a cable
 2.  Install the development board for the Raspberry Pi Pico on the Arduino IDE.
 3.  Select Raspberry Pi PIco Development Board 
