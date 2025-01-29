@@ -8,7 +8,7 @@ The Pagtingin obstacle detecting glasses aims to help visually impaired people t
 Hence, Pagtingin aims to aid this limitation and ensure a safe journey of navigation. Whether indoors or outdoors, the device will be able to identify potential hazards through an ultrasonic sensor and send real-time audio or tactile feedback, which helps users to be much more confident and safe in the user's day-to-day lives.
 
 ![Blind person walking happily](https://github.com/Niqtan/Pagtingin/blob/main/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park.jpg)
-##### Freepik. (n.d.). Blind man, people with disability, handicapped person, everyday life, visually impaired man with walking stick descending steps in city park [Photograph]. Freepik. https://www.freepik.com/free-photo/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park_10165991.htm
+<sub><sup>Freepik. (n.d.). Blind man, people with disability, handicapped person, everyday life, visually impaired man with walking stick descending steps in city park [Photograph]. Freepik. https://www.freepik.com/free-photo/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park_10165991.htm</sup></sub>
 
 ## Contents of the Project
 
