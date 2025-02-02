@@ -8,6 +8,7 @@ The Pagtingin obstacle detecting glasses aims to help visually impaired people t
 Hence, Pagtingin aims to aid this limitation and ensure a safe journey of navigation. Whether indoors or outdoors, the device will be able to identify potential hazards through an ultrasonic sensor and send real-time audio or tactile feedback, which helps users to be much more confident and safe in the user's day-to-day lives.
 
 ![Blind person walking happily](https://github.com/Niqtan/Pagtingin/blob/main/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park.jpg)
+<sub><sup>Freepik. (n.d.). Blind man, people with disability, handicapped person, everyday life, visually impaired man with walking stick descending steps in city park [Photograph]. Freepik. https://www.freepik.com/free-photo/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park_10165991.htm</sup></sub>
 
 ## Contents of the Project
 
@@ -38,7 +39,7 @@ After the detection phase, the glasses will use the signal in order to release a
 - A bundle of jumper wires
 
 
-## Flashing on the ESP32
+## Flashing on the Raspberry Pi Pico
 1.  Connect the Raspberry Pi Pico to the computer using a cable
 2.  Install the development board for the Raspberry Pi Pico on the Arduino IDE.
 3.  Select Raspberry Pi PIco Development Board 
