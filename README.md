@@ -31,8 +31,8 @@ After the detection phase, the glasses will use the signal in order to release a
 - 1 * 9V Alkaline Battery
 - 1 * HR-SR04 Ultrasonic distance sensor
 - 1 * Short Solderless Breadboard
-- 1 * Active Buzzer
-- 1 * LM358 Operational Amplifier
+- 1 * 0.5W, 8Ω Portable Speaker
+- 1 * TDA2822M Integrated Circuit (IC)
 - 1 * 2N2222 NPN Transistor
 - 1 * 1MΩ Resistor, 4 * 10KΩ Resistor  
 - A bundle of jumper wires
@@ -52,6 +52,22 @@ By the end of the project, I wish to strenghthen my understanding of these topic
 - Understand the basics of programming in embedded systems, specifically in the Arduino IDE and alternative ways of programming a microcontroller
 - Apply the basics of circuit theory such as op amps, transistors, and electrical circuit applications.
 - Experience how to make a device with an embedded system, and the ergonomics behind them.
+
+## To do list - Valid 02-02-2025
+- Try to implement the code in the Pico SDK
+- Research on how to make an I2S communication protocol for the audio
+    - Use a PIO for this one and follow this reference:
+    https://arduino-pico.readthedocs.io/en/latest/i2s.html
+    https://www.reddit.com/r/raspberrypipico/comments/lcmhs5/got_i2s_dac_working_with_pico/
+    https://forums.pimoroni.com/t/pico-audio-which-pins-are-used/20686/2
+- How to use a NPN transistor to amplify audio signal:
+    - https://www.instructables.com/Simple-Audio-Amplifier-Using-Single-Transistor/
+- How to use the TDA2822M for amplifying audio:
+    - https://www.utmel.com/components/tda2822m-low-voltage-power-amplifier-datasheet-pinout-and-circuit?id=702
+- Calculations for the 8 Ohm 0.5W speaker:
+    - https://electronics.stackexchange.com/questions/129277/how-many-volts-can-a-1-watt-8-ohm-speaker-take
+
+
 
 ## Project Status
 The project is currently in its prototype form. An improved version will have more features and improvements to the design of the system coming soon. 
