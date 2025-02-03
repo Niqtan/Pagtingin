@@ -55,11 +55,8 @@ By the end of the project, I wish to strenghthen my understanding of these topic
 
 ## To do list - Valid 02-02-2025
 - Try to implement the code in the Pico SDK
-- Research on how to make an I2S communication protocol for the audio
-    - Use a PIO for this one and follow this reference:
-    https://arduino-pico.readthedocs.io/en/latest/i2s.html
-    https://www.reddit.com/r/raspberrypipico/comments/lcmhs5/got_i2s_dac_working_with_pico/
-    https://forums.pimoroni.com/t/pico-audio-which-pins-are-used/20686/2
+    - Implement the PWM code first to see which period would the best
+    - Try to find a library or some sort of code for the HR-SR04
 - How to use a NPN transistor to amplify audio signal:
     - https://www.instructables.com/Simple-Audio-Amplifier-Using-Single-Transistor/
 - How to use the TDA2822M for amplifying audio:
