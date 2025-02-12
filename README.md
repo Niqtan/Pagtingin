@@ -32,9 +32,10 @@ After the detection phase, the glasses will use the signal in order to release a
 - 1 * Short Solderless Breadboard
 - 1 * HY-SRF05 Ultrasonic distance sensor
 - 1 * 0.5W, 8Ω Portable Speaker
+- 1 * Active Piezzo Buzzer
 - 1 * TDA2822M Integrated Circuit (IC)
 - 2 * 1µF, one ceramic and one electrolytic
-- 1 * 32Ω Resistor, 4 * 10KΩ Resistor  
+- 1 * 32Ω Resistor, 1 * 4.7KΩ Resistor, //Check this later
 - A bundle of jumper wires
 
 
