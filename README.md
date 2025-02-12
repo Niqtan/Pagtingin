@@ -39,8 +39,9 @@ After the detection phase, the glasses will use the signal in order to release a
 
 
 ## Flashing on the Raspberry Pi Pico
-1.  Connect the Raspberry Pi Pico to the computer using a cable
-2. Clone using git clone:
+1. Hold the BOOTSEL button of the Raspberry Pi Pico
+2. Simultaneously, whilst holding it, connect a USB cable to the Pico and let go of the BOOTSEL afterwards
+3. Drag and drop the main.uf2 file on the drive of the Raspberry Pi Pico
 
 
 ## Learning Outcomes
