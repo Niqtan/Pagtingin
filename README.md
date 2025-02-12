@@ -29,12 +29,12 @@ After the detection phase, the glasses will use the signal in order to release a
 ## Parts Needed
 - 1 * Raspberry Pi Pico 
 - 1 * 9V Alkaline Battery
-- 1 * HR-SR04 Ultrasonic distance sensor
 - 1 * Short Solderless Breadboard
+ - 1 * HR-SR04 Ultrasonic distance sensor
 - 1 * 0.5W, 8Ω Portable Speaker
 - 1 * TDA2822M Integrated Circuit (IC)
-- 1 * 2N2222 NPN Transistor
-- 1 * 1MΩ Resistor, 4 * 10KΩ Resistor  
+- 2 * 1µF, one ceramic and one electrolytic
+- 1 * 32Resistor, 4 * 10KΩ Resistor  
 - A bundle of jumper wires
 
 
