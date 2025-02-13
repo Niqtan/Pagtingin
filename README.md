@@ -7,13 +7,13 @@ The Pagtingin obstacle detecting glasses aims to help visually impaired people t
 
 Hence, Pagtingin aims to aid this limitation and ensure a safe journey of navigation. Whether indoors or outdoors, the device will be able to identify potential hazards through an ultrasonic sensor and send real-time audio or tactile feedback, which helps users to be much more confident and safe in the user's day-to-day lives.
 
-![Blind person walking happily](https://github.com/Niqtan/Pagtingin/blob/main/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park.jpg)
+![Blind person walking happily](images/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park.jpg)
 
 ## Contents of the Project
 
 In my proposed system, an ultrasonic sensor is placed in front of the user's glasses. The ultrasonic sensor will provide information to the glasses before audio or tactile feedback will be sent to the user.
 
-![Ultrasonic sensor detection](https://github.com/Niqtan/Pagtingin/blob/main/download.jpeg)
+![Ultrasonic sensor detection](images/download.jpeg)
 
 ## How does it work?
 
@@ -24,7 +24,7 @@ Whenever the glasses detects an obstacle in front of the user within the 30 cent
 After the detection phase, the glasses will use the signal in order to release an audio or tactile feedback relative to the distance in cm of the ultrasonic sensor to an obstacle.
 
 ## Circuit Diagram
-![KiCad circuit diagram](https://github.com/Niqtan/Pagtingin/blob/main/Screenshot%202025-01-28%20172207.png)
+![KiCad circuit diagram](images/Screenshot%202025-02-13%20192624.png)
 
 ## Parts Needed
 - 1 * Raspberry Pi Pico 
