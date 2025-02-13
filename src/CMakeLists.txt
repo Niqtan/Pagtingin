@@ -1,6 +1,6 @@
-add_executable(main main.cpp)
+add_executable(main main.c)
 
-target_sources(main PRIVATE main.cpp)
+target_sources(main PRIVATE main.c)
 
 target_link_libraries(main pico_stdlib hardware_timer hardware_irq hardware_pwm hardware_sync)
 
