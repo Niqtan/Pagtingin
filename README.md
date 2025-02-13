@@ -29,21 +29,21 @@ After the detection phase, the glasses will use the signal in order to release a
 ## Parts Needed
 - 1 * Raspberry Pi Pico 
 - 1 * 9V Alkaline Battery
-- 1 * HR-SR04 Ultrasonic distance sensor
 - 1 * Short Solderless Breadboard
+- 1 * HY-SRF05 Ultrasonic distance sensor
 - 1 * 0.5W, 8Ω Portable Speaker
+- 1 * Active Piezzo Buzzer
 - 1 * TDA2822M Integrated Circuit (IC)
-- 1 * 2N2222 NPN Transistor
-- 1 * 1MΩ Resistor, 4 * 10KΩ Resistor  
+- 2 * 1µF, one ceramic and one electrolytic
+- 1 * 47Ω Resistor, 1 * 4.7KΩ Resistor, 1 * 330Ω Resistor
 - A bundle of jumper wires
 
 
-## Flashing on the ESP32
-1.  Connect the Raspberry Pi Pico to the computer using a cable
-2.  Install the development board for the Raspberry Pi Pico on the Arduino IDE.
-3.  Select Raspberry Pi PIco Development Board 
-4. Select the COM Port on the Arduino IDE
-5. Click compile and upload
+## Flashing on the Raspberry Pi Pico
+1. Hold the BOOTSEL button of the Raspberry Pi Pico
+2. Simultaneously, whilst holding it, connect a USB cable to the Pico and let go of the BOOTSEL afterwards
+3. Drag and drop the main.uf2 file on the drive of the Raspberry Pi Pico
+
 
 ## Learning Outcomes
 
@@ -52,19 +52,7 @@ By the end of the project, I wish to strenghthen my understanding of these topic
 - Understand the basics of programming in embedded systems, specifically in the Arduino IDE and alternative ways of programming a microcontroller
 - Apply the basics of circuit theory such as op amps, transistors, and electrical circuit applications.
 - Experience how to make a device with an embedded system, and the ergonomics behind them.
-
-## To do list - Valid 02-02-2025
-- Try to implement the code in the Pico SDK
-    - Implement the PWM code first to see which period would the best
-    - Try to find a library or some sort of code for the HR-SR04
-- How to use a NPN transistor to amplify audio signal:
-    - https://www.instructables.com/Simple-Audio-Amplifier-Using-Single-Transistor/
-- How to use the TDA2822M for amplifying audio:
-    - https://www.utmel.com/components/tda2822m-low-voltage-power-amplifier-datasheet-pinout-and-circuit?id=702
-- Calculations for the 8 Ohm 0.5W speaker:
-    - https://electronics.stackexchange.com/questions/129277/how-many-volts-can-a-1-watt-8-ohm-speaker-take
-
-
+- Love engineeeing more
 
 ## Project Status
 The project is currently in its prototype form. An improved version will have more features and improvements to the design of the system coming soon. 

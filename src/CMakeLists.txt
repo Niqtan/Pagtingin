@@ -1,19 +1,12 @@
-cmake_minimum_required(VERSION 3.13...3.27)
+add_executable(main main.cpp)
 
-# initialize the SDK based on PICO_SDK_PATH
-# note: this must happen before project()
-include(pico_sdk_import.cmake)
+target_sources(main PRIVATE main.cpp)
 
-project(main)
+target_link_libraries(main pico_stdlib hardware_timer hardware_irq hardware_pwm hardware_sync)
 
-# initialize the Raspberry Pi Pico SDK
-pico_sdk_init()
-
-# rest of your project
-
-add_executable(main main.c)
-
-target_link_libraries(main pico_stdlib)
+pico_enable_stdio_usb(main 1)
+pico_enable_stdio_uart(main 0)
 
 #Creates a map/bin/hex/uf2 in addition to the ELF file (executables)
 pico_add_extra_outputs(main)
+
