@@ -26,16 +26,19 @@ After the detection phase, the glasses will use the signal in order to release a
 ## Circuit Diagram
 ![KiCad circuit diagram](images/Screenshot%202025-02-13%20192624.png)
 
-## Parts Needed
+## Components Needed
 - 1 * Raspberry Pi Pico 
-- 1 * 9V Alkaline Battery
+- 1 * 9V Alkaline Battery (with a 9V battery connector)
 - 1 * Short Solderless Breadboard
 - 1 * HY-SRF05 Ultrasonic distance sensor
 - 1 * 0.5W, 8Ω Portable Speaker
+- 1 * LM7805 Voltage Regulator
 - 1 * Active Piezzo Buzzer
 - 1 * TDA2822M Integrated Circuit (IC)
-- 1 * 2N2222 NPN Transistor
-- 1 * 1MΩ Resistor, 4 * 10KΩ Resistor  
+- 2 * 1µF capacitor, one ceramic and one electrolytic
+- 1 * 10µF electrolytic capacitor 
+- 2 * 330Ω Resistor, 2 * 4.7KΩ Resistor,
+1 * 47Ω Resistor  
 - A bundle of jumper wires
 
 
