@@ -52,8 +52,8 @@ After the detection phase, the glasses will use the signal in order to release a
 
 By the end of the project, I wish to strenghthen my understanding of these topics:
 
-- Understand the basics of programming in embedded systems, specifically in the Arduino IDE and alternative ways of programming a microcontroller
-- Apply the basics of circuit theory such as op amps, transistors, and electrical circuit applications.
+- Understand the basics of programming programming a Raspberry Pi Pico, specifically in its C/C++ SDK.
+- Apply the basics of circuit theory such as op amps, RC Low pass filters, and electrical circuit applications.
 - Experience how to make a device with an embedded system, and the ergonomics behind them.
 - Love engineeeing more
 

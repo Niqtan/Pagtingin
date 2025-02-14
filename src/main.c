@@ -106,7 +106,7 @@ int pwm_speaker() {
  pwm_config_set_clkdiv(&le_conf, CLKDIV);
  //PWM freq = clock freq/(wrap + 1) * clock divider val
  //So, if we want 10kHz output from the rp2040:
-   //10kHz = 125,000,000 Hz / (wrap + 1) * 1.0
+   //20kHz = 125,000,000 Hz / (wrap + 1) * 1.0
    //To find the wrap val, you may just rearrange the equation via algebra:
    //wrap = (125,000,000 / 10000) - 1
  pwm_config_set_wrap(&le_conf, WRAPVAL);
@@ -159,11 +159,12 @@ int main() {
    
     }
    else {
-     pwm_is_active = true;
+     pwm_is_active = false;
      gpio_put(BUZZER_PIN, 0);
    }
 
    sleep_ms(1);
+   pwm_is_active = false;
    printf("Distance: %lld cm\n", distance);
   }
 

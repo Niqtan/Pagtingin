@@ -13,7 +13,7 @@
 #define BUZZER_PIN 13
 
 //Wrapval determines how long a PWM cycle should last
-#define WRAPVAL 12499
+#define WRAPVAL 6249
 //The CLKDIV is for the clock divider in calibrating how
 //many cycles can the given freq complete
 
