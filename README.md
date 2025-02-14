@@ -24,7 +24,7 @@ Whenever the glasses detects an obstacle in front of the user within the 30 cent
 After the detection phase, the glasses will use the signal in order to release an audio or tactile feedback relative to the distance in cm of the ultrasonic sensor to an obstacle.
 
 ## Circuit Diagram
-![KiCad circuit diagram](images/Screenshot%202025-02-14%20180011.png)
+![KiCad circuit diagram](images/Screenshot%202025-02-14%20180215.png)
 
 ## Components Needed
 - 1 * Raspberry Pi Pico 
@@ -37,7 +37,7 @@ After the detection phase, the glasses will use the signal in order to release a
 - 1 * TDA2822M Integrated Circuit (IC)
 - 2 * 1µF capacitor, one ceramic and one electrolytic
 - 1 * 10µF electrolytic capacitor 
-- 2 * 330Ω Resistor, 2 * 4.7KΩ Resistor,
+- 2 * 1KΩ Resistor, 2 * 4.7KΩ Resistor,
 1 * 47Ω Resistor  
 - A bundle of jumper wires
 
