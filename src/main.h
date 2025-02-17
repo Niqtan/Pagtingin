@@ -7,18 +7,22 @@
 #include "hardware/pwm.h" //Used for driving audio via PWM
 #include "hardware/sync.h" //For the "wait for interrupt" function
 
+//FreeRTOS
+#include "external\FreeRTOS-Kernel\include\FreeRTOS.h"
+#include "task.h"
+
 #define TRIG_PIN 4
 #define ECHO_PIN 5
 #define SPEAKER_PIN 16
 #define BUZZER_PIN 13
 
 //Wrapval determines how long a PWM cycle should last
-#define WRAPVAL 6249
+#define WRAPVAL 1419
 //The CLKDIV is for the clock divider in calibrating how
 //many cycles can the given freq complete
 
 //In simple terms, it's calibrating the speed of the frequency
-#define CLKDIV 1.0f
+#define CLKDIV 8.0f
 
 #define AND &&
 #define TIMEOUT 30000
@@ -36,7 +40,13 @@ uint64_t get_cm(uint8_t trig_pin, uint8_t echo_pin);
 
 void pwm_interrupt_handler();
 
-int pwm_speaker();
+Pulse* pwm_initialize();
+
+void pwm_speaker(void* pvParameters);
+
+void buzzer_cook(void* pvParameters);
+
+void activate_tasks(void* pvParameters);
 
 /* map: maps the values of the buzzer delay
 * @param a: the distance taken by the ultrasonic sensor

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import samplerate
 
 #Generates a graph
-soundfile = '30cm.wav'
+soundfile = 'Obstacle Detected.wav'
 data_in, datasamplerate = sf.read(soundfile)
 # This means stereo so extract one channel 0
 if len(data_in.shape)>1:
@@ -16,7 +16,7 @@ plt.show()
 
 #Part 2 of the audio
 converter = 'sinc_best'  # or 'sinc_fastest', ...
-desired_sample_rate = 10000.0
+desired_sample_rate = 11000.0
 ratio = desired_sample_rate/datasamplerate
 data_out = samplerate.resample(data_in, ratio, converter)
 print(data_out)
