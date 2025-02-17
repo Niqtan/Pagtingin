@@ -34,8 +34,18 @@
 
 void setup_pins(void);
 
+/* get_pulse: activates the HY-SRF05
+* @param a: GPIO pin trig pin is connected 
+* @param b: GPIO pin echo pin is connected
+* @return: confirmation if successful operation
+*/
 uint64_t get_pulse(uint8_t trig_pin, uint8_t echo_pin);
 
+/* get_cm: Converts the distance to cm
+* @param a: GPIO pin trig pin is connected 
+* @param b: GPIO pin echo pin is connected
+* @return: the cm result after converting
+*/
 uint64_t get_cm(uint8_t trig_pin, uint8_t echo_pin);
 
 void pwm_interrupt_handler();
@@ -50,6 +60,10 @@ void activate_tasks(void* pvParameters);
 
 /* map: maps the values of the buzzer delay
 * @param a: the distance taken by the ultrasonic sensor
-* @param b: 
+* @param b: the starting range of the current value
+* @param c: the ending range of the current value
+* @param d: the new minimum target range 
+* @param e: the new maximum target range
+* @return: integer within the new range
 */
 int map(int distance, int starting_low, int starting_high, int ending_low, int ending_high);
