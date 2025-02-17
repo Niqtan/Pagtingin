@@ -11,7 +11,8 @@ target_include_directories(main PRIVATE
 
 target_sources(main PRIVATE main.c)
 
-target_link_libraries(main pico_stdlib hardware_timer hardware_irq hardware_pwm hardware_sync pico_multicore freertos_kernel)
+target_link_libraries(main pico_stdlib hardware_timer hardware_irq hardware_pwm hardware_sync pico_multicore FreeRTOS-Kernel
+FreeRTOS-Kernel-Heap4)
 
 
 #Creates a map/bin/hex/uf2 in addition to the ELF file (executables)

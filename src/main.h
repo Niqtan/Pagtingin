@@ -8,7 +8,7 @@
 #include "hardware/sync.h" //For the "wait for interrupt" function
 
 //FreeRTOS
-#include "external\FreeRTOS-Kernel\include\FreeRTOS.h"
+#include "FreeRTOS.h"
 #include "task.h"
 
 #define TRIG_PIN 4
