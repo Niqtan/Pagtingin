@@ -6,8 +6,11 @@
 typedef struct {
   pwm_config le_conf;
   uint8_t slice_num;
-  uint64_t distance;
 } Pulse;
+
+typedef struct {
+  uint64_t distance;
+} Distance;
 
 void setup_pins(void) {
  gpio_init(ECHO_PIN);
@@ -66,7 +69,7 @@ int map(int distance, int starting_low, int starting_high, int ending_low, int e
 
 int wav_position = 0;
 //Flag for calling PWM
-bool pwm_is_active = false;
+volatile bool pwm_is_active = false;
 
 void pwm_interrupt_handler() {
    //ISR Function for managing the interrupt
@@ -131,7 +134,7 @@ Pulse* pwm_initialize() {
 void pwm_speaker(void* pvParameters) {
   Pulse* pwm_settings;
 
-  pwm_init(&pwm_settings->slice_num, &pwm_settings->le_conf, true);
+  pwm_init(pwm_settings->slice_num, &pwm_settings->le_conf, true);
 
   pwm_set_gpio_level(SPEAKER_PIN, 0);
 
@@ -141,11 +144,11 @@ void pwm_speaker(void* pvParameters) {
 
 }
 
-void buzzer_cook(void* pvParameters) {
-  int buzzer_delay; 
-  Pulse* pwm_settings;
 
-  buzzer_delay = map(pwm_settings->distance, 0, THRESHOLD, BUZZER_MIN, BUZZER_MAX);
+void buzzer_cook(void* pvParameters) {
+  int buzzer_delay;
+  Distance* dist = (Distance *)pvParameters;
+  buzzer_delay = map(dist->distance, 0, THRESHOLD, BUZZER_MIN, BUZZER_MAX);
       
   gpio_put(BUZZER_PIN, 1);
   sleep_ms(buzzer_delay);
@@ -165,22 +168,22 @@ void activate_tasks(void* pvParameters)
   TaskHandle_t Buzzer_task = NULL;
 
   while (true) {
-    pwm_settings->distance = get_cm(TRIG_PIN, ECHO_PIN);
+    uint64_t distance = get_cm(TRIG_PIN, ECHO_PIN);
     
-    if (pwm_settings->distance >= THRESHOLD AND pwm_settings->distance <= 50) {
+    if (distance >= THRESHOLD AND distance <= 50) {
       //Call PWM signal for activating the speaker
       if (pwm_is_active == false) {
         pwm_is_active = true;
         //Task for firing up the PWM speaker
         if (!PWM_task) {
-          xTaskCreate(pwm_speaker, "PWM_Interrupt", 1024, NULL, tskIDLE_PRIORITY, &PWM_task);
+          xTaskCreate(pwm_speaker, "PWM_Interrupt", 1024, NULL, 2, &PWM_task);
         }
       }
     }
-    else if (pwm_settings->distance < THRESHOLD) {
+    else if (distance < THRESHOLD) {
       //Task for firing up the buzzer
       if (!Buzzer_task) {
-        xTaskCreate(buzzer_cook, "buzzer_cooks", 1024, NULL, 1, &Buzzer_task);
+        xTaskCreate(buzzer_cook, "buzzer_cooks", 1024, &distance, 1, &Buzzer_task);
         pwm_is_active = false;
       }
     }
@@ -189,8 +192,8 @@ void activate_tasks(void* pvParameters)
      gpio_put(BUZZER_PIN, 0);
    }
 
-   sleep_ms(10);
-   printf("Distance: %lld cm\n", pwm_settings->distance);
+   sleep_ms(1);
+   printf("Distance: %lld cm\n", distance);
   }
 }
 
@@ -201,8 +204,10 @@ int main() {
  
  setup_pins();
 
- xTaskCreate(activate_tasks, "Master_tasker", NULL, 2, NULL);
+ xTaskCreate(activate_tasks, "Master_tasker", 1024, NULL, 0, NULL);
 
  //Start the freeRTOS scheduler
  vTaskStartScheduler();
+
+ //Code should not reach here unless RAM is insufficient
 } 

@@ -7,14 +7,14 @@
 #include "hardware/pwm.h" //Used for driving audio via PWM
 #include "hardware/sync.h" //For the "wait for interrupt" function
 
-//FreeRTOS
-#include "FreeRTOS.h"
-#include "task.h"
-
 #define TRIG_PIN 4
 #define ECHO_PIN 5
 #define SPEAKER_PIN 16
 #define BUZZER_PIN 13
+
+//FreeRTOS libs
+#include "FreeRTOS.h"
+#include "task.h"
 
 //Wrapval determines how long a PWM cycle should last
 #define WRAPVAL 1419
@@ -46,17 +46,18 @@ uint64_t get_pulse(uint8_t trig_pin, uint8_t echo_pin);
 * @param b: GPIO pin echo pin is connected
 * @return: the cm result after converting
 */
-uint64_t get_cm(uint8_t trig_pin, uint8_t echo_pin);
 
-void pwm_interrupt_handler();
+uint64_t get_cm(uint8_t trig_pin, uint8_t echo_pin);
 
 Pulse* pwm_initialize();
 
-void pwm_speaker(void* pvParameters);
+//Task handler for the buzzer
+void buzzer_cook();
 
-void buzzer_cook(void* pvParameters);
+//Interrupt handler for the speaker
+void pwm_interrupt_handler();
 
-void activate_tasks(void* pvParameters);
+void activate_tasks(void* pvParameters)
 
 /* map: maps the values of the buzzer delay
 * @param a: the distance taken by the ultrasonic sensor
