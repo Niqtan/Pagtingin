@@ -57,9 +57,8 @@ uint64_t get_cm(uint8_t trig_pin, uint8_t echo_pin) {
 //Slice num for getting the slice num
 uint8_t pwm_slice_num;
 
-
 //Flag for calling PWM
-volatile bool pwm_is_active = false;
+volatile bool pwm_flag = false;
 
 void interrupt_initialize() {
   gpio_set_function(SPEAKER_PIN, GPIO_FUNC_PWM);
@@ -67,11 +66,13 @@ void interrupt_initialize() {
   //Converts our GPIO pin to a slice num
   pwm_slice_num = pwm_gpio_to_slice_num(SPEAKER_PIN);
  
-  //Set the PWM interrupt
+  /* Explanation of PWM interrupt:
+  Trigger: the RP2040 will send out a PWM signal (i.e. the interrupt handler) once the PWM 
+  wraps around or reaches the wrap limit 
+  */
+
   pwm_clear_irq(pwm_slice_num);
   pwm_set_irq_enabled(pwm_slice_num, true);
-  
-  //Configuring the Interrupts 
 
   irq_set_exclusive_handler(PWM_IRQ_WRAP, pwm_interrupt_handler);
   irq_set_priority(PWM_IRQ_WRAP, 1);
@@ -79,23 +80,32 @@ void interrupt_initialize() {
 
   pwm_config le_conf = pwm_get_default_config();
   pwm_config_set_clkdiv(&le_conf, CLKDIV * 8);
-  //PWM freq = clock freq/(wrap + 1) * clock divider val
-  //So, if we have a 11k sample rate:
-    //11kHz = 125,000,000 Hz / (wrap + 1) * 8.0
-    //To find the wrap val, you may just rearrange the equation via algebra:
-    //wrap = (125,000,000 / 11000 * 8) - 1
-    //wrap = 1419
+  /*PWM freq = clock freq/(wrap + 1) * clock divider val
+  So, if we have a 11k sample rate:
+    11kHz = 125,000,000 Hz / (wrap + 1) * 8.0
+    To find the wrap val, you may just rearrange the equation via algebra:
+    wrap = (125,000,000 / 11000 * 8) - 1
+    wrap = 1419
+  */
+
   pwm_config_set_wrap(&le_conf, WRAPVAL);   
 
-  pwm_init(pwm_slice_num, &le_conf, true);
-  
+  pwm_init(pwm_slice_num, &le_conf, false);
+
   pwm_set_gpio_level(SPEAKER_PIN, 0);
 
-  while (pwm_is_active) {
-    __wfi();
-  }
- }
+  /* Explanation of buzzer interrupt:
+  Since the buzzer interrupt has a higher priority than the PWM interrupt,
+  once the processor detects 
+  */
 
+  //Check definition of this one
+  gpio_set_irq_enabled(BUZZER_PIN, GPIO_IRQ_EDGE_RISE, true);
+  irq_set_exclusive_handler(IO_IRQ_BANK0, buzzer_cook_handler);
+  irq_set_priority(IO_IRQ_BANK0, 0);
+  irq_set_enabled(IO_IRQ_BANK0, true);
+
+ }
 
 int wav_position = 0;
 void pwm_interrupt_handler() {
@@ -122,25 +132,23 @@ void pwm_interrupt_handler() {
    else {
      //Reset if it reaches the very end of array
      wav_position = 0;
-     pwm_is_active = false;
+     pwm_flag = false;
    }
-
 }
 
  uint64_t distance;
 
- void buzzer_cook_handler() {
-  int buzzer_delay;
-  
-  gpio_acknowledge_irq(BUZZER_PIN, GPIO_IRQ_LEVEL_HIGH);
+volatile bool buzz_flag =  false;
+int buzzer_delay;
 
-  buzzer_delay = map(distance, 0, THRESHOLD, BUZZER_MIN, BUZZER_MAX);
-      
-  gpio_put(BUZZER_PIN, 1);
-  sleep_ms(buzzer_delay);
-  gpio_put(BUZZER_PIN, 0);
-  sleep_ms(buzzer_delay);
-      
+void buzzer_cook_handler() {
+
+gpio_acknowledge_irq(BUZZER_PIN, GPIO_IRQ_EDGE_RISE);
+
+buzzer_delay = map(distance, 0, THRESHOLD, BUZZER_MIN, BUZZER_MAX);
+
+//Use a flag to signal that it should be working
+buzz_flag = true;
 }
 
 
@@ -161,24 +169,31 @@ int main() {
     
     if (distance >= THRESHOLD AND distance <= 50) {
       //Call PWM signal for activating the speaker
-      if (pwm_is_active == false) {
-        gpio_put(SPEAKER_PIN, 1);
-        pwm_is_active = true;
+      if (pwm_flag == false) {
+        pwm_flag = true;
+        pwm_set_enabled(pwm_slice_num, pwm_flag);
+        gpio_put(BUZZER_PIN, 0);
       }
     }
     else if (distance < THRESHOLD) {
-    
-      pwm_is_active = false;
+      gpio_put(BUZZER_PIN, 1);
+      pwm_set_enabled(pwm_slice_num, pwm_flag);   
+      
+      if (buzz_flag == true) {
+        gpio_put(BUZZER_PIN, 1);
+        sleep_ms(buzzer_delay);
+        gpio_put(BUZZER_PIN, 0);
+        sleep_ms(buzzer_delay); 
+      }
     }
    else {
-     pwm_is_active = false;
-     gpio_put(SPEAKER_PIN, 0);
      gpio_put(BUZZER_PIN, 0);
+     pwm_set_enabled(pwm_slice_num, pwm_flag);
    }
 
-   sleep_ms(1);
-   pwm_is_active = false;
-   printf("Distance: %lld cm\n", distance);
+
+  sleep_ms(1);
+  printf("Distance: %lld cm\n", distance);
   }
 
 } 

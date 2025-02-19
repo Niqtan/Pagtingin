@@ -3,9 +3,9 @@
 #include <stdbool.h>
 #include "pico/stdlib.h" 
 #include "hardware/timer.h" //We need to time certain stuff
+#include "hardware/gpio.h" //For the buzzer interrupt
 #include "hardware/irq.h" //Used for interrupt in order to control PWM
 #include "hardware/pwm.h" //Used for driving audio via PWM
-#include "hardware/sync.h" //For the "wait for interrupt" function
 
 #define TRIG_PIN 4
 #define ECHO_PIN 5
