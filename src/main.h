@@ -12,10 +12,6 @@
 #define SPEAKER_PIN 16
 #define BUZZER_PIN 13
 
-//FreeRTOS libs
-#include "FreeRTOS.h"
-#include "task.h"
-
 //Wrapval determines how long a PWM cycle should last
 #define WRAPVAL 1419
 //The CLKDIV is for the clock divider in calibrating how
@@ -49,9 +45,14 @@ uint64_t get_pulse(uint8_t trig_pin, uint8_t echo_pin);
 
 uint64_t get_cm(uint8_t trig_pin, uint8_t echo_pin);
 
-void pwm_interrupt_handler();
+//Initialize the interrupts of PWM and the buzzzer
+void interrupt_initialize();
 
-int pwm_speaker();
+//Interrupt handler for the buzzer
+void buzzer_cook_handler();
+
+//Interrupt handler for the speaker
+void pwm_interrupt_handler();
 
 /* map: maps the values of the buzzer delay
 * @param a: the distance taken by the ultrasonic sensor
