@@ -3,9 +3,9 @@
 #include <stdbool.h>
 #include "pico/stdlib.h" 
 #include "hardware/timer.h" //We need to time certain stuff
+#include "hardware/gpio.h" //For the buzzer interrupt
 #include "hardware/irq.h" //Used for interrupt in order to control PWM
 #include "hardware/pwm.h" //Used for driving audio via PWM
-#include "hardware/sync.h" //For the "wait for interrupt" function
 
 #define TRIG_PIN 4
 #define ECHO_PIN 5
@@ -49,15 +49,9 @@ uint64_t get_pulse(uint8_t trig_pin, uint8_t echo_pin);
 
 uint64_t get_cm(uint8_t trig_pin, uint8_t echo_pin);
 
-Pulse* pwm_initialize();
-
-//Task handler for the buzzer
-void buzzer_cook();
-
-//Interrupt handler for the speaker
 void pwm_interrupt_handler();
 
-void activate_tasks(void* pvParameters)
+int pwm_speaker();
 
 /* map: maps the values of the buzzer delay
 * @param a: the distance taken by the ultrasonic sensor

@@ -36,7 +36,7 @@ uint64_t get_pulse(uint8_t trig_pin, uint8_t echo_pin) {
 
    while (gpio_get(echo_pin) == 0) {
      if (time_us_64() - start_time > TIMEOUT) {
-       printf("You're Cooked\n");
+       printf("Your shit is doomed!\n");
        return 0;
      }
    }
@@ -45,6 +45,7 @@ uint64_t get_pulse(uint8_t trig_pin, uint8_t echo_pin) {
    
    while (gpio_get(echo_pin) == 1) {
      if (time_us_64() - start_time > TIMEOUT) {
+       printf("You're Cooked!\n");
        printf("You're Cooked\n");
        return 0;
      }
@@ -61,6 +62,60 @@ uint64_t get_cm(uint8_t trig_pin, uint8_t echo_pin) {
    uint64_t travel_time = get_pulse(trig_pin, echo_pin);
    
    return (travel_time / 29) / 2;
+}
+
+//Slice num for getting the slice num
+uint8_t pwm_slice_num;
+
+//Flag for calling PWM
+volatile bool pwm_flag = false;
+
+void interrupt_initialize() {
+  gpio_set_function(SPEAKER_PIN, GPIO_FUNC_PWM);
+  
+  //Converts our GPIO pin to a slice num
+  pwm_slice_num = pwm_gpio_to_slice_num(SPEAKER_PIN);
+ 
+  /* Explanation of PWM interrupt:
+  Trigger: the RP2040 will send out a PWM signal (i.e. the interrupt handler) once the PWM 
+  wraps around or reaches the wrap limit 
+  */
+
+  pwm_clear_irq(pwm_slice_num);
+  pwm_set_irq_enabled(pwm_slice_num, true);
+
+  irq_set_exclusive_handler(PWM_IRQ_WRAP, pwm_interrupt_handler);
+  irq_set_priority(PWM_IRQ_WRAP, 1);
+  irq_set_enabled(PWM_IRQ_WRAP, true);
+
+  pwm_config le_conf = pwm_get_default_config();
+  pwm_config_set_clkdiv(&le_conf, CLKDIV * 8);
+  /*PWM freq = clock freq/(wrap + 1) * clock divider val
+  So, if we have a 11k sample rate:
+    11kHz = 125,000,000 Hz / (wrap + 1) * 8.0
+    To find the wrap val, you may just rearrange the equation via algebra:
+    wrap = (125,000,000 / 11000 * 8) - 1
+    wrap = 1419
+  */
+
+  pwm_config_set_wrap(&le_conf, WRAPVAL);   
+
+  pwm_init(pwm_slice_num, &le_conf, false);
+
+  pwm_set_gpio_level(SPEAKER_PIN, 0);
+
+  /* Explanation of buzzer interrupt:
+  Since the buzzer interrupt has a higher priority than the PWM interrupt,
+  once the processor detects 
+  */
+
+  //Check definition of this one
+  gpio_set_irq_enabled(BUZZER_PIN, GPIO_IRQ_EDGE_RISE, true);
+  irq_set_exclusive_handler(IO_IRQ_BANK0, buzzer_cook_handler);
+  irq_set_priority(IO_IRQ_BANK0, 0);
+  irq_set_enabled(IO_IRQ_BANK0, true);
+
+ }
 }
 
 int map(int distance, int starting_low, int starting_high, int ending_low, int ending_high) {
@@ -91,12 +146,36 @@ void pwm_interrupt_handler() {
      Bit shifting by 8 means that we repeat the same value to the pwm pin 8 times 
      in a row, which gets us at the right sampling rate for the audio
      */
+
+     pwm_set_gpio_level(SPEAKER_PIN, WAV_DATA[wav_position>>3]); //Divide by 8
      pwm_set_gpio_level(SPEAKER_PIN, WAV_DATA[wav_position]); //Divide by 8
      wav_position++;
    }
    else {
      //Reset if it reaches the very end of array
      wav_position = 0;
+     pwm_flag = false;
+   }
+}
+
+ uint64_t distance;
+
+volatile bool buzz_flag =  false;
+int buzzer_delay;
+
+void buzzer_cook_handler() {
+
+gpio_acknowledge_irq(BUZZER_PIN, GPIO_IRQ_EDGE_RISE);
+
+buzzer_delay = map(distance, 0, THRESHOLD, BUZZER_MIN, BUZZER_MAX);
+
+//Use a flag to signal that it should be working
+buzz_flag = true;
+}
+
+
+int map(int distance, int starting_low, int starting_high, int ending_low, int ending_high) {
+  return (distance - starting_low) * (ending_high - ending_low) / (starting_high - starting_low) + ending_low;
      pwm_is_active = false;
    }
 
@@ -144,6 +223,13 @@ void pwm_speaker(void* pvParameters) {
 
 }
 
+int main() {
+ //Initialize I/O
+ stdio_init_all();
+ 
+ setup_pins();
+
+ interrupt_initialize();
 
 void buzzer_cook(void* pvParameters) {
   int buzzer_delay;
@@ -168,10 +254,16 @@ void activate_tasks(void* pvParameters)
   TaskHandle_t Buzzer_task = NULL;
 
   while (true) {
+    distance = get_cm(TRIG_PIN, ECHO_PIN);
+    
     uint64_t distance = get_cm(TRIG_PIN, ECHO_PIN);
     
     if (distance >= THRESHOLD AND distance <= 50) {
       //Call PWM signal for activating the speaker
+      if (pwm_flag == false) {
+        pwm_flag = true;
+        pwm_set_enabled(pwm_slice_num, pwm_flag);
+        gpio_put(BUZZER_PIN, 0);
       if (pwm_is_active == false) {
         pwm_is_active = true;
         //Task for firing up the PWM speaker
@@ -181,6 +273,15 @@ void activate_tasks(void* pvParameters)
       }
     }
     else if (distance < THRESHOLD) {
+      gpio_put(BUZZER_PIN, 1);
+      pwm_set_enabled(pwm_slice_num, pwm_flag);   
+      
+      if (buzz_flag == true) {
+        gpio_put(BUZZER_PIN, 1);
+        sleep_ms(buzzer_delay);
+        gpio_put(BUZZER_PIN, 0);
+        sleep_ms(buzzer_delay); 
+      }
       //Task for firing up the buzzer
       if (!Buzzer_task) {
         xTaskCreate(buzzer_cook, "buzzer_cooks", 1024, &distance, 1, &Buzzer_task);
@@ -188,10 +289,13 @@ void activate_tasks(void* pvParameters)
       }
     }
    else {
-     pwm_is_active = false;
      gpio_put(BUZZER_PIN, 0);
+     pwm_set_enabled(pwm_slice_num, pwm_flag);
    }
 
+
+  sleep_ms(1);
+  printf("Distance: %lld cm\n", distance);
    sleep_ms(1);
    printf("Distance: %lld cm\n", distance);
   }
