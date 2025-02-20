@@ -119,7 +119,7 @@ void pwm_interrupt_handler() {
    over and over until certain conditions have been met
    */                              //Multiply by 8
    if (wav_position < (WAV_DATA_LENGTH<<3) - 1) {
-     
+     printf("First few samples: %d, %d, %d\n", WAV_DATA[0], WAV_DATA[1], WAV_DATA[2]);
      //How does this work?
 
      /* IN PWM, we have cycles. A cycle is basically something wherein 
@@ -172,13 +172,14 @@ int main() {
       if (pwm_flag == false) {
         pwm_flag = true;
         pwm_set_enabled(pwm_slice_num, pwm_flag);
+        printf("PWM is set to true\n");
         gpio_put(BUZZER_PIN, 0);
       }
     }
     else if (distance < THRESHOLD) {
       gpio_put(BUZZER_PIN, 1);
       pwm_set_enabled(pwm_slice_num, pwm_flag);   
-      
+      printf("PWM is set to false\n");
       if (buzz_flag == true) {
         gpio_put(BUZZER_PIN, 1);
         sleep_ms(buzzer_delay);
@@ -189,10 +190,11 @@ int main() {
    else {
      gpio_put(BUZZER_PIN, 0);
      pwm_set_enabled(pwm_slice_num, pwm_flag);
+     printf("PWM is set to false");
    }
 
 
-  sleep_ms(1);
+  sleep_ms(10);
   printf("Distance: %lld cm\n", distance);
   }
 
