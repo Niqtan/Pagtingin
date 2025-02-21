@@ -34,11 +34,10 @@ After the detection phase, the glasses will use the signal in order to release a
 - 1 * 0.5W, 8Ω Portable Speaker
 - 1 * LM7805 Voltage Regulator
 - 1 * Active Piezzo Buzzer
-- 1 * TDA2822M Integrated Circuit (IC)
+- 1 * PAM8403 Audio Amplifier
 - 2 * 1µF capacitor, one ceramic and one electrolytic
-- 1 * 10µF electrolytic capacitor 
-- 2 * 1KΩ Resistor, 2 * 4.7KΩ Resistor,
-1 * 47Ω Resistor  
+- 1 * 10µF electrolytic capacitor
+- 1 * 8Ω Resistor  
 - A bundle of jumper wires
 
 
