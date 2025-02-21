@@ -1,4 +1,3 @@
-
 # Pagtingin (Obstacle Detecting Glasses)
 
 ## Project Aims
@@ -32,7 +31,7 @@ Demonstration
 
 ## Components Needed
 - 1 * Raspberry Pi Pico 
-- 1 * 9V Alkaline Battery (with a 9V battery connector)
+- 1 * 9V Alkaline Battery (with a long enough V battery connector)
 - 1 * Short Solderless Breadboard
 - 1 * HY-SRF05 Ultrasonic distance sensor
 - 1 * 1W, 8Ω Portable Speaker
@@ -45,11 +44,13 @@ Demonstration
 - 1 * 6.6KΩ Resistor  
 - A bundle of jumper wires
 
-
 ## Flashing on the Raspberry Pi Pico
 1. Hold the BOOTSEL button of the Raspberry Pi Pico
 2. Simultaneously, whilst holding it, connect a USB cable to the Pico and let go of the BOOTSEL afterwards
 3. Drag and drop the main.uf2 file on the drive of the Raspberry Pi Pico
+Pico
+
+After making the circuit, you may mount  to other accessories as well.
 
 
 ## Learning Outcomes
