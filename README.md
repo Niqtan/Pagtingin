@@ -50,7 +50,7 @@ Demonstration
 3. Drag and drop the main.uf2 file on the drive of the Raspberry Pi Pico
 Pico
 
-After making the circuit, you may mount  to other accessories as well.
+After making the circuit, you may mount  this to other accessories as well.
 
 
 ## Learning Outcomes
