@@ -18,12 +18,16 @@ In my proposed system, an ultrasonic sensor is placed in front of the user's gla
 ## How does it work?
 
 ### Detection
-Whenever the glasses detects an obstacle in front of the user within the 30 centimeter range, the ultrasonic sensor will send a signal to the glasses for readings.
+Whenever the glasses detects an obstacle in front of the user within the 50 centimeter range, the ultrasonic sensor will send a signal to the glasses for readings.
 
-### Feedback
-After the detection phase, the glasses will use the signal in order to release an audio or tactile feedback relative to the distance in cm of the ultrasonic sensor to an obstacle.
+## Feedback
+After the detection phase, the glasses will use the readings in order to release an audio feedback relative to the distance in cm of the ultrasonic sensor to an obstacle.
 
-## Circuit Diagram
+If the obstacle is close enough (roughly 50cm) then the glasses will alert via a voice message. Once the user approaches within the 30cm mark,the buzzer will beep fasteer and faster as the user gets close.
+
+Demonstration
+
+# Circuit Diagram
 ![KiCad circuit diagram](images/Screenshot%202025-02-14%20180215.png)
 
 ## Components Needed
