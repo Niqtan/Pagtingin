@@ -31,13 +31,14 @@ After the detection phase, the glasses will use the signal in order to release a
 - 1 * 9V Alkaline Battery (with a 9V battery connector)
 - 1 * Short Solderless Breadboard
 - 1 * HY-SRF05 Ultrasonic distance sensor
-- 1 * 0.5W, 8Ω Portable Speaker
+- 1 * 1W, 8Ω Portable Speaker
 - 1 * LM7805 Voltage Regulator
 - 1 * Active Piezzo Buzzer
 - 1 * PAM8403 Audio Amplifier
-- 2 * 1µF capacitor, one ceramic and one electrolytic
+- 1 * 1µF capacitor,one electrolytic
 - 1 * 10µF electrolytic capacitor
-- 1 * 8Ω Resistor  
+- 1 * 1nF capacitor
+- 1 * 6.6KΩ Resistor  
 - A bundle of jumper wires
 
 
