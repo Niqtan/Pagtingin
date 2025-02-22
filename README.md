@@ -37,11 +37,10 @@ Demonstration
 - 1 * 1W, 8Ω Portable Speaker
 - 1 * LM7805 Voltage Regulator
 - 1 * Active Piezzo Buzzer
-- 1 * PAM8403 Audio Amplifier
-- 1 * 1µF capacitor,one electrolytic
+- 1 * PAM8403 Class D Audio Amplifier
+- 2 * 1µF capacitor, one electrolytic and one ceramic
 - 1 * 10µF electrolytic capacitor
-- 1 * 1nF capacitor
-- 1 * 6.6KΩ Resistor  
+- 1 * 10Ω Resistor  
 - A bundle of jumper wires
 
 ## Flashing on the Raspberry Pi Pico

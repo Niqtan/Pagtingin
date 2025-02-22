@@ -82,10 +82,11 @@ void interrupt_initialize() {
   pwm_config_set_clkdiv(&le_conf, CLKDIV * 8);
   /*PWM freq = clock freq/(wrap + 1) * clock divider val
   So, if we have a 11k sample rate:
-    11kHz = 125,000,000 Hz / (wrap + 1) * 8.0
+    *Since we have a 11k sample rate, we want 4x of that for the PWM freq*
+    44kHz = 125,000,000 Hz / (wrap + 1) * 8.0
     To find the wrap val, you may just rearrange the equation via algebra:
-    wrap = (125,000,000 / 11000 * 8) - 1
-    wrap = 1419
+    wrap = (125,000,000 / 44000 * 8) - 1
+    wrap = 354
   */
 
   pwm_config_set_wrap(&le_conf, WRAPVAL);   
@@ -98,8 +99,6 @@ void interrupt_initialize() {
   Since the buzzer interrupt has a higher priority than the PWM interrupt,
   once the processor detects 
   */
-
-  //Check definition of this one
   gpio_set_irq_enabled(BUZZER_PIN, GPIO_IRQ_EDGE_RISE, true);
   irq_set_exclusive_handler(IO_IRQ_BANK0, buzzer_cook_handler);
   irq_set_priority(IO_IRQ_BANK0, 0);
@@ -120,12 +119,8 @@ void pwm_interrupt_handler() {
    */                              //Multiply by 8
    if (wav_position < (WAV_DATA_LENGTH<<3) - 1) {
      printf("First few samples: %d, %d, %d\n", WAV_DATA[0], WAV_DATA[1], WAV_DATA[2]);
-     //How does this work?
-
-     /* IN PWM, we have cycles. A cycle is basically something wherein 
-     it is a measurement of an on and off time cycle
-     */
-
+    //This decodes each element in the array of obstacle.h, and that will repeat for 8 times
+    // for each PWM cycle. As a result, it will release the audio.
      pwm_set_gpio_level(SPEAKER_PIN, WAV_DATA[wav_position>>3]); //Divide by 8
      wav_position++;
    }
