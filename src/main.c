@@ -10,9 +10,6 @@ void setup_pins(void) {
  gpio_init(TRIG_PIN);
  gpio_set_dir(TRIG_PIN, GPIO_OUT);
 
- gpio_init(SPEAKER_PIN);
- gpio_set_dir(SPEAKER_PIN, GPIO_OUT);
-
  gpio_init(BUZZER_PIN);
  gpio_set_dir(BUZZER_PIN, GPIO_OUT);
 }
@@ -118,10 +115,9 @@ void pwm_interrupt_handler() {
    over and over until certain conditions have been met
    */                              //Multiply by 8
    if (wav_position < (WAV_DATA_LENGTH<<3) - 1) {
-     printf("First few samples: %d, %d, %d\n", WAV_DATA[0], WAV_DATA[1], WAV_DATA[2]);
     //This decodes each element in the array of obstacle.h, and that will repeat for 8 times
     // for each PWM cycle. As a result, it will release the audio.
-     pwm_set_gpio_level(SPEAKER_PIN, WAV_DATA[wav_position>>3]); //Divide by 8
+     pwm_set_gpio_level(SPEAKER_PIN, (WAV_DATA[wav_position>>3] * WRAPVAL) / 255); //Divide by 8
      wav_position++;
    }
    else {
@@ -162,13 +158,13 @@ int main() {
   while (true) {
     distance = get_cm(TRIG_PIN, ECHO_PIN);
     
-    if (distance >= THRESHOLD AND distance <= 50) {
+    if (distance >= THRESHOLD AND distance <= 70) {
       //Call PWM signal for activating the speaker
       if (pwm_flag == false) {
         pwm_flag = true;
+        gpio_put(BUZZER_PIN, 0);
         pwm_set_enabled(pwm_slice_num, pwm_flag);
         printf("PWM is set to true\n");
-        gpio_put(BUZZER_PIN, 0);
       }
     }
     else if (distance < THRESHOLD) {
@@ -185,7 +181,7 @@ int main() {
    else {
      gpio_put(BUZZER_PIN, 0);
      pwm_set_enabled(pwm_slice_num, pwm_flag);
-     printf("PWM is set to false");
+     printf("PWM is set to false w/ buzzer \n");
    }
 
 

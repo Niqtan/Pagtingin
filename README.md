@@ -31,7 +31,7 @@ Demonstration
 
 ## Components Needed
 - 1 * Raspberry Pi Pico 
-- 1 * 9V Alkaline Battery (with a long enough V battery connector)
+- 1 * 9V Alkaline Battery (with a long enough 9V battery connector)
 - 1 * Short Solderless Breadboard
 - 1 * HY-SRF05 Ultrasonic distance sensor
 - 1 * 1W, 8Ω Portable Speaker

@@ -9,7 +9,7 @@
 
 #define TRIG_PIN 4
 #define ECHO_PIN 5
-#define SPEAKER_PIN 16
+#define SPEAKER_PIN 26
 #define BUZZER_PIN 13
 
 //Wrapval determines how long a PWM cycle should last
