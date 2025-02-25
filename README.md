@@ -27,7 +27,7 @@ If the obstacle is close enough (roughly 50cm) then the glasses will alert via a
 Demonstration
 
 # Circuit Diagram
-![KiCad circuit diagram](images/Screenshot%202025-02-22%20205817.png)
+![KiCad circuit diagram](images/Screenshot%202025-02-25%20170817.png)
 
 ## Components Needed
 - 1 * Raspberry Pi Pico 
