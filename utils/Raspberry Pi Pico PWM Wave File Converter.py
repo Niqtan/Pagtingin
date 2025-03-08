@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import samplerate
 
 #Generates a graph
-soundfile = 'Obstacle Detected.wav'
+soundfile = 'alert-85101.wav'
 data_in, datasamplerate = sf.read(soundfile)
 # This means stereo so extract one channel 0
 if len(data_in.shape)>1:

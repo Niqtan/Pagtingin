@@ -20,27 +20,28 @@ In my proposed system, an ultrasonic sensor is placed in front of the user's gla
 Whenever the glasses detects an obstacle in front of the user within the 50 centimeter range, the ultrasonic sensor will send a signal to the glasses for readings.
 
 ## Feedback
-After the detection phase, the glasses will use the readings in order to release an audio feedback relative to the distance in cm of the ultrasonic sensor to an obstacle.
+After the detection phase, the glasses will use the ultrasonic readings in order to release an audio feedback relative to the distance in centimeters (cm) of the ultrasonic sensor to an obstacle.
 
-If the obstacle is close enough (roughly 50cm) then the glasses will alert via a voice message. Once the user approaches within the 30cm mark,the buzzer will beep fasteer and faster as the user gets close.
+If the obstacle is close enough (roughly 70cm) then the glasses will alert via a voice message. Once the user approaches within the 30cm mark,the buzzer will beep fasteer and faster as the user gets close.
 
 Demonstration
 
 # Circuit Diagram
-![KiCad circuit diagram](images/Screenshot%202025-02-25%20170817.png)
+![KiCad circuit diagram](images/Circuit.png)
 
 ## Components Needed
 - 1 * Raspberry Pi Pico 
-- 1 * 9V Alkaline Battery (with a long enough 9V battery connector)
+- 2 * 9V Alkaline Battery (with a long enough 9V battery connector)
 - 1 * Short Solderless Breadboard
 - 1 * HY-SRF05 Ultrasonic distance sensor
 - 1 * 1W, 8Ω Portable Speaker
 - 1 * LM7805 Voltage Regulator
 - 1 * Active Piezzo Buzzer
-- 1 * PAM8403 Class D Audio Amplifier
-- 2 * 1µF capacitor, one electrolytic and one ceramic
+- 1 * PAM8403 Class D Audio Amplifier Module
+- 1 * 1µF electrolytic capacitor
+- 1 * 0.47 µF
 - 1 * 10µF electrolytic capacitor
-- 1 * 10Ω Resistor  
+- 1 * 100Ω Resistor  
 - A bundle of jumper wires
 
 ## Flashing on the Raspberry Pi Pico
@@ -51,15 +52,20 @@ Pico
 
 After making the circuit, you may mount  this to other accessories as well.
 
-
 ## Learning Outcomes
 
 By the end of the project, I wish to strenghthen my understanding of these topics:
 
 - Understand the basics of programming programming a Raspberry Pi Pico, specifically in its C/C++ SDK.
 - Apply the basics of circuit theory such as op amps, RC Low pass filters, and electrical circuit applications.
+- Understand embedded systems concepts, such as communication protocols, interrupts, soldering, etc.
 - Experience how to make a device with an embedded system, and the ergonomics behind them.
-- Love engineeeing more
+Love engineeeing more
+
+## A Message
+Oh.. engineering.... Initially, I thought this project would be easy, yet it seems that wouldn't be the case. Almost 4 months working on it oftenly, prototype's finished.
+
+Some challenges? Definitely the speaker part haha. I got stuck with that problem for about 3 weeks. Turns out, my speaker was too weak to drive voice, so I just switched to a tune. Anyways, that was really the only problem which almost made me rip my hair apart. Thanks for tuning for this part of the readme.
 
 ## Project Status
 The project is currently in its prototype form. An improved version will have more features and improvements to the design of the system coming soon. 

@@ -1,7 +1,7 @@
 #include "main.h"
 
 //Include the arrays consisting of the decoded audio files
-#include "obstacle.h"
+#include "alert.h"
 
 void setup_pins(void) {
  gpio_init(ECHO_PIN);
@@ -72,11 +72,11 @@ void interrupt_initialize() {
   pwm_set_irq_enabled(pwm_slice_num, true);
 
   irq_set_exclusive_handler(PWM_IRQ_WRAP, pwm_interrupt_handler);
-  irq_set_priority(PWM_IRQ_WRAP, 1);
+  irq_set_priority(PWM_IRQ_WRAP, 0);
   irq_set_enabled(PWM_IRQ_WRAP, true);
 
   pwm_config le_conf = pwm_get_default_config();
-  pwm_config_set_clkdiv(&le_conf, CLKDIV * 8);
+  pwm_config_set_clkdiv(&le_conf, CLKDIV);
   /*PWM freq = clock freq/(wrap + 1) * clock divider val
   So, if we have a 11k sample rate:
     *Since we have a 11k sample rate, we want 4x of that for the PWM freq*
@@ -98,7 +98,7 @@ void interrupt_initialize() {
   */
   gpio_set_irq_enabled(BUZZER_PIN, GPIO_IRQ_EDGE_RISE, true);
   irq_set_exclusive_handler(IO_IRQ_BANK0, buzzer_cook_handler);
-  irq_set_priority(IO_IRQ_BANK0, 0);
+  irq_set_priority(IO_IRQ_BANK0, 1);
   irq_set_enabled(IO_IRQ_BANK0, true);
 
  }
@@ -117,7 +117,7 @@ void pwm_interrupt_handler() {
    if (wav_position < (WAV_DATA_LENGTH<<3) - 1) {
     //This decodes each element in the array of obstacle.h, and that will repeat for 8 times
     // for each PWM cycle. As a result, it will release the audio.
-     pwm_set_gpio_level(SPEAKER_PIN, (WAV_DATA[wav_position>>3] * WRAPVAL) / 255); //Divide by 8
+     pwm_set_gpio_level(SPEAKER_PIN, (WAV_DATA[wav_position>>3])); //Divide by 8
      wav_position++;
    }
    else {
@@ -157,17 +157,10 @@ int main() {
 
   while (true) {
     distance = get_cm(TRIG_PIN, ECHO_PIN);
-    
-    if (distance >= THRESHOLD AND distance <= 70) {
-      //Call PWM signal for activating the speaker
-      if (pwm_flag == false) {
-        pwm_flag = true;
-        gpio_put(BUZZER_PIN, 0);
-        pwm_set_enabled(pwm_slice_num, pwm_flag);
-        printf("PWM is set to true\n");
-      }
-    }
-    else if (distance < THRESHOLD) {
+    if (distance < THRESHOLD) {
+
+      pwm_flag = false;
+      
       gpio_put(BUZZER_PIN, 1);
       pwm_set_enabled(pwm_slice_num, pwm_flag);   
       printf("PWM is set to false\n");
@@ -176,9 +169,20 @@ int main() {
         sleep_ms(buzzer_delay);
         gpio_put(BUZZER_PIN, 0);
         sleep_ms(buzzer_delay); 
+        buzz_flag = false;
+      }
+    }
+    else if (distance >= THRESHOLD AND distance <= 70) {
+      //Call PWM signal for activating the speaker
+      gpio_put(BUZZER_PIN, 0);
+      if (!pwm_flag) {
+        pwm_flag = true;
+        pwm_set_enabled(pwm_slice_num, pwm_flag);
+        printf("PWM is set to true\n");
       }
     }
    else {
+    pwm_flag = false;
      gpio_put(BUZZER_PIN, 0);
      pwm_set_enabled(pwm_slice_num, pwm_flag);
      printf("PWM is set to false w/ buzzer \n");
