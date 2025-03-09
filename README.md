@@ -1,5 +1,7 @@
 # Pagtingin (Obstacle Detecting Glasses)
 
+![Project Wearable](images/Glasses.jpg)
+
 ## Project Aims
 
 The Pagtingin obstacle detecting glasses aims to help visually impaired people to easily detect obstacles in front of them through innovative glasses. While traditional walking sticks indeed help in detecting obstacles on the ground, they often fail to identify objects at chest or head level, such as low-hanging branches, open cabinets, or protruding signs. 
@@ -7,6 +9,8 @@ The Pagtingin obstacle detecting glasses aims to help visually impaired people t
 Hence, Pagtingin aims to aid this limitation and ensure a safe journey of navigation. Whether indoors or outdoors, the device will be able to identify potential hazards through an ultrasonic sensor and send real-time audio or tactile feedback, which helps users to be much more confident and safe in the user's day-to-day lives.
 
 ![Blind person walking happily](images/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park.jpg)
+
+Courtesy of Freepik
 
 ## Contents of the Project
 
@@ -25,6 +29,7 @@ After the detection phase, the glasses will use the ultrasonic readings in order
 If the obstacle is close enough (roughly 70cm) then the glasses will alert via a voice message. Once the user approaches within the 30cm mark,the buzzer will beep fasteer and faster as the user gets close.
 
 Demonstration
+![Glasses Demonstration](images/Demonstration.mp4)
 
 # Circuit Diagram
 ![KiCad circuit diagram](images/Circuit.png)
