@@ -44,7 +44,7 @@ If the obstacle is close enough (roughly 70cm) then the glasses will alert via a
 - 1 * Active Piezzo Buzzer
 - 1 * PAM8403 Class D Audio Amplifier Module
 - 1 * 1µF electrolytic capacitor
-- 1 * 0.47 µF
+- 1 * 0.47µF electrolytic capacitor 
 - 1 * 10µF electrolytic capacitor
 - 1 * 100Ω Resistor  
 - A bundle of jumper wires
