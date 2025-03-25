@@ -3,7 +3,7 @@
 ![Project Wearable](images/Glasses.jpg)
 
 ## Demonstration
-https://youtu.be/hJObuYf60A0
+https://www.youtube.com/watch?v=mGvRfI-a0dM
 
 ## Project Aims
 
