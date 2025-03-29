@@ -31,24 +31,6 @@ After the detection phase, the glasses will use the ultrasonic readings in order
 
 If the obstacle is close enough (roughly 70cm) then the glasses will alert via a voice message. Once the user approaches within the 30cm mark,the buzzer will beep fasteer and faster as the user gets close.
 
-# Circuit Diagram
-![KiCad circuit diagram](images/Circuit.png)
-
-## Components Needed
-- 1 * Raspberry Pi Pico 
-- 2 * 9V Alkaline Battery (with a long enough 9V battery connector)
-- 1 * Short Solderless Breadboard
-- 1 * HY-SRF05 Ultrasonic distance sensor
-- 1 * 1W, 8Ω Portable Speaker
-- 1 * LM7805 Voltage Regulator
-- 1 * Active Piezzo Buzzer
-- 1 * PAM8403 Class D Audio Amplifier Module
-- 1 * 1µF electrolytic capacitor
-- 1 * 0.47µF electrolytic capacitor 
-- 1 * 10µF electrolytic capacitor
-- 1 * 100Ω Resistor  
-- A bundle of jumper wires
-
 ## Flashing on the Raspberry Pi Pico
 1. Hold the BOOTSEL button of the Raspberry Pi Pico
 2. Simultaneously, whilst holding it, connect a USB cable to the Pico and let go of the BOOTSEL afterwards
