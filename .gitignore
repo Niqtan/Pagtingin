@@ -169,3 +169,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+<<<<<<< HEAD
+=======
+
+# Prototype video
+ESP32 Prototype/Hardware/
+ESP32 Prototype/Software/YOLOV8/
+>>>>>>> e0d52fb (Prototype v2)
