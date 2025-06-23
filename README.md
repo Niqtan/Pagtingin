@@ -37,24 +37,24 @@ Image 4. Panelized PCB Back View
 
 ### Glasses Frame
 
-![alt text](CADDesign/frame_front.png)
+![alt text](CADDesign/framefront.png)
 Image 5. Glasses Frame Front View
 
-![alt text](CADDesign/frame_top.png)
+![alt text](CADDesign/frametop.png)
 Image 6. Glasses Frame Top View
 
-![alt text](CADDesign/frame_back.png)
+![alt text](CADDesign/frameback.png)
 Image 7. Glasses Frame Back View
 
 ### Temples
 
-![alt text](CADDesign/temple_side.png)
+![alt text](CADDesign/templeside.png)
 Image 8. Glasses Temple Side View
 
-![alt text](CADDesign/temple_top.png)
+![alt text](CADDesign/templetop.png)
 Image 9. Glasses Temple Top View
 
-![alt text](CADDesign/temple_bottom.png)
+![alt text](CADDesign/templebottom.png)
 Image 10. Glasses Temple Bottom View
 
 ## 3D Printing
