@@ -472,3 +472,96 @@ To do list:
 - Try to start making PCB
 
 # Entry 11 - 06-18-25: PCB Making Session 01
+
+
+What type of PCB will we use?
+- A double layer PCB, with a front and back side.
+
+Best type of surface finishes?
+- What is a surface finish?
+	- It is a intermettalic joint between the bare copper of the solderable area of the PCB and components
+	- Allows for the PCB's copper of the substrate to not be oxidized
+
+Next we set-up the constraints according to the manufacturer's details
+
+
+Reminder: Select footprint for battery of connector
+
+Introduction to Multiboard PCB Design: [[Pagtingin Study - Introduction to Multiboard PCB Design - 06-18-25]]
+
+I ran into a problem though.
+- Since Im planning to make this into separate PCB, that means I need to make them connected somehow 
+	- For that, I used a FFC connector and FFC in order to solve that problem.
+	- So the amount of pins needed depended on these signals:
+		- Power (3.3V, 5V)
+		- Analog Power (3.3V)
+		- Ground
+		- Analog Ground
+		- SDA 
+		- SCL
+		- Audio Lines (OUTL and OUTR)
+
+Another problem I ran into:
+- Was that my shape and measurements wasnt exactly right
+	- Revised measurements: 
+- Sometimes I confused height for length and such
+- Also I havent thought about making it openable
+
+Also I had concerns about heating and the battery exploding, here is what I thought of:
+- Thermal Relief on the PCB
+	- Add large copper pours esp on GND and VDD planes
+	- Add thermal vias to spread heat across layers
+- Place hot parts near air gaps
+	- Put the boost converter to the outer wall of the temple
+- Use exposed pad footprint
+
+Then I started implementing the FPC connector
+
+# Entry 12 - 06-19-25: PCB Making Session 02
+
+
+When implementing the FPC connector, I noticed the two PCB boards needed FPC connectors for the components they had needed the signals they required
+
+The first FPC connector (Power Supply PCB)
+- SDA 
+-  SCL
+- Audio Lines (OUTL and OUTR)
+Total around 4 pins
+
+Pitch: 0.5mm
+
+The second FPC Connector (The Main functionality PCB)
+- Power (3.3V, 5V)
+- Analog Power (3.3V)
+- Ground
+- Analog Ground
+- Total around 5 PINS
+
+	Pitch: 0.5mm
+
+Now getting into layoutting problems
+- The problem with layoutting, is that since this is a small PCB, I had to check if electrolytic capacitors were working, which they were not
+- I also revised the shape and measurements to be  according to the CAD
+
+Connecting the components together
+...
+
+Basics of Vias:  [[PCB Making  - Via Basics - 06-19-25]]
+
+# Entry 13 - 06-20-25: PCB Making Session 03
+
+
+Anyways for ths PCB Making Session, I had to research up on mouse bites (breakaway tabs) in order for my two PCBs to still be separated but manufactured into one PCB
+
+What is V-Score?
+- Involes adding grooves for easy breaking later on
+
+Also, since I needed to program my MCU, I needed pogo pins
+- Pogo pins: 
+
+
+Also some polishing was done:
+Width changed to 15.250 mm
+Length is still close to 103-105 mm
+
+# Entry 14 - Finished PCB and CAD
