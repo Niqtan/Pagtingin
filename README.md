@@ -61,7 +61,7 @@ Image 10. Glasses Temple Bottom View
 In terms of 3D printing, it might be better to print this in resin since the glasses frame will require precise dimensions. You may be able to print this in FDM, but it is recommended for the parameters to be as precise as possible.
 
 ## BOM
-![CSV File](Pagtingin_Final_BOM - Pagtingin_Final.csv)
+[PagtinginFinal.csv](PagtinginFinal.csv)
 
 ## Firmware
 Still in progress. You may see previous prototypes in the folder for previous version's firmware. But for the firmware, I am planning to use the ESP-IDF in programming it. I chose the ESP-IDF because it allows full control over the ESP32-PICO-D4's peripherals and such. (also because I wanna challenge myself)
