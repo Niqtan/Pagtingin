@@ -10,6 +10,7 @@ DISCLAIMER: I had been working on this project even before Highway. I had a prot
 | Date started: March 17, 2025 
 
 Total hours spent (according to notes): 
+## 81 Hours
 
 
 P.S. These were all my notes taken in Obsidian. Some of them are linked to other pages.
@@ -40,6 +41,8 @@ Different Research:
 
 ![image](https://github.com/user-attachments/assets/261673fb-0cb7-4189-9690-622d5f361063)
 Image 1. First Steps of my project
+
+Total time spent: 2 hours
 
 # Entry #1 - 03-20-25: Research
 
@@ -107,7 +110,7 @@ Types of exciters
 Are they better than normal speakers?
 - It depends.
 
-
+Total time spent: 3 hours
 
 # References
 - https://www.instructables.com/Adafruit-Bone-Conduction-Speaker/
@@ -144,6 +147,8 @@ Antenna
 
 Debugger and programmer:
 - The ESP-PROG with the programmer and JTAG interface
+
+Total time spent: 2 hours
 
 # Entry #3 - 03-22-25: Research on Best batteries and Use case:
 
@@ -187,6 +192,9 @@ Individual researches:
 ![image](https://github.com/user-attachments/assets/53de69f2-5ffe-4338-beeb-3cc9c7723cee)
 Image 2. Looking for Components
 
+
+Total time spent: 3 hours
+
 # Entry #4 - 03-23-25: Searching for SMD Components
 
 Resistors
@@ -205,6 +213,8 @@ Transistor
 - MOSFET (This is for the power unit of the circuit)
 	- Try out the LFPAK56
 
+Total time spent: 1 hour
+
 ### -- INCOMPLETE --
 
 ## APRIL
@@ -213,8 +223,12 @@ Transistor
 ![image](https://github.com/user-attachments/assets/d44ea76a-51b4-44e8-9726-1fb0a5bd1495)
 Image 3. Working with the PAM8403 Audio Amp Chip - 04-06-25
 
+Total time spent: 4 hours
+
 ![image](https://github.com/user-attachments/assets/2e9d16df-faf4-4a74-844f-443c71c0d51d)
 Image 4. Working with the ESP32-PICO-D4 - 04-07-25
+
+Total time spent: 3 hours
 
 # Entry #5 - 04-13-25: Total and Peak Current of Components Chosen:
 
@@ -275,15 +289,19 @@ It is a balanced ground but to optimize for power:
 ![image](https://github.com/user-attachments/assets/c3472202-c220-4431-8635-add35ea4a3ef)
 Image 5. Searching for a better PMIC - 04-20-25
 
+Total time spent: 2 hours
+
 
 ## For May, I mainly did the Firmware but I wasn't able to document it since it was before Highway was announced.
 
 Here are some pictures though (I videod my sessions)
 ![image](https://github.com/user-attachments/assets/863ba716-f730-42a1-9640-a9794eaba403)
 Image 6. Learning About TOF Sensor - 05-01-2025
+Total time spent: 3 hours
 
 ![image](https://github.com/user-attachments/assets/d5717240-67b8-4de8-bf87-b7aa4c540679)
 Image 7. Transferring my Raspbery Pi Pico Code to ESP32 - 05-15-2025
+Total time spent: 5 hours
 
 
 
@@ -332,6 +350,8 @@ To do list:
 
 ![image](https://github.com/user-attachments/assets/35607c8f-1fc4-418f-93a1-f6f30354e74b)
 Image 8. Making the Glasses CAD
+Total time spent: 6 hours
+
 
 # Entry 07 - 06-13-25: Schematic Session 01
 
@@ -361,6 +381,7 @@ To do list:
 
 ![image](https://github.com/user-attachments/assets/ec6de011-6153-4ce5-83ff-acc42ae4a168)
 Image 9. Brainstorming for PCB Shape and Design
+Total time spent: 5 hours
 
 
 # Entry 08 - 06-14-25: Modular PCB Designing & Glasses CAD Design
@@ -412,7 +433,10 @@ Refer: [[PCB Making - What is a Flat Flexible Cable (FFC) - 06-15-25]]
 Image 10. Finished Frame of the Glasses
 
 ![image](https://github.com/user-attachments/assets/01a7da1d-98db-4ecf-b8e5-c349ae099ca5)
-Image 11. Finished Templo of the Glasses 
+Image 11. Finished Temple of the Glasses 
+
+Total time spent: 6 hours
+
 
 # Entry 09 - 06-15-25: Schematic Session 02
 
@@ -446,6 +470,9 @@ To do list:
 ![image](https://github.com/user-attachments/assets/09e2364f-6601-4fff-b6db-38a73595f5a0)
 Image 12. Doing Latching Circuit
 
+Total time spent: 5 hours
+
+
 # Entry #10 - 06-17-25: Schematic Session 03
 
 For this schematic session, I was able to:
@@ -470,6 +497,12 @@ Then I assigned footprints and stuff
 To do list:
 - Debugging the schematic and finding a way to simulate all of this stuff
 - Try to start making PCB
+
+Total time spent: 3 hours
+
+![alt text](<Screenshot 2025-06-17 221918.png>)
+Image 13. Polishing Schematic
+
 
 # Entry 11 - 06-18-25: PCB Making Session 01
 
@@ -517,6 +550,11 @@ Also I had concerns about heating and the battery exploding, here is what I thou
 
 Then I started implementing the FPC connector
 
+Total time spent: 6 hours
+
+![alt text](<Screenshot 2025-06-18 111535.png>)
+Image 14. Layoutting the PCB
+
 # Entry 12 - 06-19-25: PCB Making Session 02
 
 
@@ -548,6 +586,11 @@ Connecting the components together
 
 Basics of Vias:  [[PCB Making  - Via Basics - 06-19-25]]
 
+Total time spent: 6 hours
+
+![alt text](<Screenshot 2025-06-19 170015.png>)
+Image 15. More Progress on Connecting Traces
+
 # Entry 13 - 06-20-25: PCB Making Session 03
 
 
@@ -564,4 +607,15 @@ Also some polishing was done:
 Width changed to 15.250 mm
 Length is still close to 103-105 mm
 
-# Entry 14 - Finished PCB and CAD
+Total time spent: 7 hours
+
+![alt text](<PCB/Pagtingin Gerber Panelized/Untitled_Combined_Top.png>)
+Image 16. Almost done layout and PCB
+
+# Entry 14 - 06-24-25: Finished PCB and CAD
+
+![alt text](PCB/image.png)
+![alt text](CADDesign/templeside.png)
+
+
+Total time spent: 9 hours
