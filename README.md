@@ -1,6 +1,6 @@
 # Pagtingin (Obstacle Detecting Glasses)
 
-![Project Wearable](Pico Prototype/images/Glasses.jpg)
+![Project Wearable](Pico_Prototype/images/Glasses.jpg)
 
 ## Demonstration
 https://www.youtube.com/watch?v=mGvRfI-a0dM
