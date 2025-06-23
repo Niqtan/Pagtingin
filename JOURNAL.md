@@ -1,7 +1,7 @@
 ---
 title: "Pagtingin"
 author: "Niq Suguitan"
-description: "I can see without opening my eyes"
+description: "A vision without action is called a daydream; but then again, action without a vision is called a nightmare."
 created_at: "2025-30-25"
 ---
 
