@@ -2,11 +2,11 @@ Comment,Specific Part,Designator,Footprint,LCSC Part #,Total
 1µ Unpolarized capacitor,CL03A105MQ3CSNC,"C1,C7,C8,C9,C12,C13,C14,C19,C20,C21,C22,C25,C32",C_0603_1608Metric,,$1.00
 2.2µ Unpolarized capacitor,CL03A105MQ3CSNC,C2,C_0603_1608Metric,,$0.08
 "0.1µ Unpolarized capacitor, small symbol",CL03A105MQ3CSNC,"C3,C6,C18,C28,C29",C_0402_1005Metric,,$0.39
-22n Unpolarized capacitor,,"C4,C5",C_0402_1005Metric,,$0.20
+22n Unpolarized capacitor,CL05B223KP5NNNC,"C4,C5",C_0402_1005Metric,,$0.20
 10µ Unpolarized capacitor,CL21A106KOQNNNG,"C11,C26,C31",C_0805_2012Metric,,$0.24
 22µ Unpolarized capacitor,CL21A106KOQNNNG,"C10, C15,C17,C33,C36",C_1206_3216Metric,,$0.48
 3.8n Unpolarized capacitor,GRM155R71H392JA01D,C16,C_0402_1005Metric,,$0.10
-4.1p Unpolarized capacitor,,C27,C_0402_1005Metric,,$0.10
+4.1p Unpolarized capacitor,04026A3R9BAT2A,C27,C_0402_1005Metric,,$0.54
 33µ Unpolarized capacitor,CL21A106KOQNNNG,"C30,C35",C_1206_3216Metric,,$0.16
 4.7µ Unpolarized capacitor,CL03A105MQ3CSNC,C34,C_0603_1608Metric,,$0.08
 "PTVS17VS1UR,115 Zener diode","PTVS17VS1UR,115",D1,D_0603_1608Metric,,$0.24
