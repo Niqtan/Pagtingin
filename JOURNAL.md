@@ -10,7 +10,7 @@ DISCLAIMER: I had been working on this project even before Highway. I had a prot
 | Date started: March 17, 2025 
 
 Total hours spent (according to notes): 
-## 81 Hours
+81 Hours
 
 
 P.S. These were all my notes taken in Obsidian. Some of them are linked to other pages.
@@ -500,7 +500,7 @@ To do list:
 
 Total time spent: 3 hours
 
-![alt text](<Screenshot 2025-06-17 221918.png>)
+![alt text](<Screenshots/Screenshot 2025-06-17 221918.png>)
 Image 13. Polishing Schematic
 
 
@@ -552,7 +552,7 @@ Then I started implementing the FPC connector
 
 Total time spent: 6 hours
 
-![alt text](<Screenshot 2025-06-18 111535.png>)
+![alt text](<Screenshots/Screenshot 2025-06-18 111535.png>)
 Image 14. Layoutting the PCB
 
 # Entry 12 - 06-19-25: PCB Making Session 02
@@ -588,7 +588,7 @@ Basics of Vias:  [[PCB Making  - Via Basics - 06-19-25]]
 
 Total time spent: 6 hours
 
-![alt text](<Screenshot 2025-06-19 170015.png>)
+![alt text](<Screenshots/Screenshot 2025-06-19 170015.png>)
 Image 15. More Progress on Connecting Traces
 
 # Entry 13 - 06-20-25: PCB Making Session 03
