@@ -14,7 +14,7 @@ Hence, Pagtingin aims to aid this limitation and ensure a safe journey of naviga
 
 (+ I wanna try walking blindly sometimes)
 
-![Blind person walking happily](images/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park.jpg)
+![Blind person walking happily](PicoPrototype/images/blind-man-people-with-disability-handicapped-person-everyday-life-visually-impaired-man-with-walking-stick-descending-steps-city-park.jpg)
 
 Courtesy of Freepik
 
