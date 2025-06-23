@@ -5,7 +5,7 @@ description: "I can see without opening my eyes"
 created_at: "2025-30-25"
 ---
 
-DISCLAIMER: I had been working on this project even before Highway. I had a prototype V1 beforehand. 
+DISCLAIMER: I had been working on this project even before Highway. I had a prototype V1 beforehand. However, most of the CAD and PCB Making happened during the duration of Highway.
 
 | Date started: March 17, 2025 
 
