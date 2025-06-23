@@ -1,6 +1,6 @@
 # Pagtingin (Obstacle Detecting Glasses)
 
-![Project Wearable](Pico_Prototype/images/Glasses.jpg)
+![Project Wearable](PicoPrototype/images/Glasses.jpg)
 Image 1. Pagtingin Prototype V1
 
 ## Prototype Demonstration
@@ -37,24 +37,24 @@ Image 4. Panelized PCB Back View
 
 ### Glasses Frame
 
-![alt text](CAD_Design/frame_front.png)
+![alt text](CADDesign/frame_front.png)
 Image 5. Glasses Frame Front View
 
-![alt text](CAD_Design/frame_top.png)
+![alt text](CADDesign/frame_top.png)
 Image 6. Glasses Frame Top View
 
-![alt text](CAD_Design/frame_back.png)
+![alt text](CADDesign/frame_back.png)
 Image 7. Glasses Frame Back View
 
 ### Temples
 
-![alt text](CAD_Design/temple_side.png)
+![alt text](CADDesign/temple_side.png)
 Image 8. Glasses Temple Side View
 
-![alt text](CAD_Design/temple_top.png)
+![alt text](CADDesign/temple_top.png)
 Image 9. Glasses Temple Top View
 
-![alt text](CAD_Design/temple_bottom.png)
+![alt text](CADDesign/temple_bottom.png)
 Image 10. Glasses Temple Bottom View
 
 ## 3D Printing
