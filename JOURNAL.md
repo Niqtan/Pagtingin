@@ -39,7 +39,7 @@ Different Research:
 - Doppler Effect:
 	- https://www.grc.nasa.gov/www/k-12/airplane/doppler.html
 
-![alt text](image-10.png)
+![alt text](Screenshots/image-10.png)
 Image 1. First Steps of my project
 
 Total time spent: 2 hours
@@ -189,7 +189,7 @@ Individual researches:
 - Power Flow Management: [[Pagtingin Study - Power Management and Flow - 03-24-25]]
 - Voltage Supervising & Protection Circuit: N/A
 
-![alt text](image-11.png)
+![alt text](Screenshots/image-11.png)
 Image 2. Reading Datasheets
 
 
@@ -220,12 +220,12 @@ Total time spent: 1 hour
 ## APRIL
 
 ## IMAGES OF APRIL WORK
-![alt text](image-8.png)
+![alt text](Screenshots/image-8.png)
 Image 3. Working with the PAM8403 Audio Amp Chip - 04-06-25
 
 Total time spent: 4 hours
 
-![alt text](image-9.png)
+![alt text](Screenshots/image-9.png)
 Image 4. Working with the ESP32-PICO-D4 - 04-07-25
 
 Total time spent: 3 hours
@@ -286,7 +286,7 @@ Needs 1Ah, 3.7V, and 2C of discharge
 It is a balanced ground but to optimize for power:
 - Utilize the sleep modes of each component
 
-![alt text](image-7.png)
+![alt text](Screenshots/image-7.png)
 Image 5. Searching for a better PMIC - 04-20-25
 
 Total time spent: 2 hours
