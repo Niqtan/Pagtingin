@@ -33,7 +33,8 @@ esp_err_t gpio_init(void) {
      }
  }
 
- esp_err_t uart_init() {
+esp_err_t uart_init() {
+    TAG = "UART";
     // UART Configuration
     uart_config_t uart_config = {
         .baud_rate = 115200,
@@ -43,45 +44,26 @@ esp_err_t gpio_init(void) {
         .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
         .source_clk = UART_SCLK_DEFAULT,
     };
-
-    ret = uart_param_config(uart_port_num, &uart_config);
-    if (ret == ESP_OK) {
-        printf("UART Channel Activated!\n");
-
-        ret = uart_set_pin(uart_port_num, 1, 3);
-        if (ret == ESP_OK) {
-            printf("UART Pins Activated!\n");
-        } else {
-            printf("UART Pins Failed To Activate\n");
-            ESP_ERROR_CHECK(ret);
-        }
-
-    } else {
-        printf("UART Channel Failed To Activate...\n");
-        ESP_ERROR_CHECK(ret);
+    
+    uart_param_config(uart_port_num, &uart_config);
+    if ((ret = uart_set_pin(uart_port_num, UART_TX_PIN, UART_RX_PIN, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE)) != ESP_OK) {
+        ESP_LOGE(TAG, "Error occured: %s\n", esp_err_to_name(ret));
     }
 
     // UART Driver installation
-    ret = uart_driver_install(uart_port_num, UART_BUFFER_SIZE, UART_BUFFER_SIZE, 0, &uart_queue, EVENT_QUEUE_SIZE);
-    if (ret == ESP_OK) {
-        printf("UART Drivers Successfully Activated!\n");
-    } else {
-        printf("UART Drivers did not activate!\n");
-        ESP_ERROR_CHECK(ret);
-    }
+    uart_driver_install(uart_port_num, UART_BUFFER_SIZE, UART_BUFFER_SIZE, 0, &uart_queue, EVENT_QUEUE_SIZE);
+
+    ESP_LOGI(TAG, "UART initialized successfully!");
 }
+  
+static void i2c_init() {
+    TAG = "I2C";
+    //The bus handle is like a USB hub maanger,
+    //all configurations are plugged into this hub
+    i2c_master_bus_handle_t tof_bus_handle;
 
- esp_err_t mqtt_start(void) {
-    esp_mqtt_client_config_t mqtt_cfg = {
-        //Address of the broker (localhost I think)
-        .broker.address.url = 
-    }
- }
-
- esp_err_t i2c_master_init() {
-    // I2C configuration
+    // I2C  master configuration (ESP32)
     i2c_master_bus_config_t tof_mst_config = {
-        //Configuration parameters of the ESP32
         .clk_source = I2C_CLK_SRC_DEFAULT,
         .i2c_port = I2C_PORT_NUM,
         .scl_io_num = I2C_MASTER_SCL_IO,
@@ -90,95 +72,194 @@ esp_err_t gpio_init(void) {
         .flags.enable_internal_pullup = true,
     };
 
-    i2c_master_bus_handle_t tof_bus_handle;
-
+    //Used for debugging
     ret = i2c_new_master_bus(&tof_mst_config, &tof_bus_handle);
-    if (ret == ESP_OK) {
-        printf("I2C Master Initialized!\n");
-    } else {
-        printf("I2C Master did not activate!\n");
-        ESP_ERROR_CHECK(ret);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "I2C Master did not activate! Error: %s\n", esp_err_to_name(ret));
     }
+    
+    //Handler for the specific I2C device (usually a slave) on the I2C bus
+    i2c_master_dev_handle_t tof_dev_handle;
 
     i2c_device_config_t tof_dev_config = {
-        //Configuration parameters of the Time of Flight Sensor
+        //Configure the slave's parameters to distinguish identity
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
-        .device_address = 0x52,
+        .device_address = I2C_TOF_ADDRESS,
         .scl_speed_hz = 100000,
     };
 
-    i2c_master_dev_handle_t tof_dev_handle;
-
     ret = i2c_master_bus_add_device(tof_bus_handle, &tof_dev_config, &tof_dev_handle);
-    if (ret == ESP_OK) {
-        printf("I2C Master bus ok!\n");
-    } else {
-        printf("No I2C Master bus bruh!\n");
-        ESP_ERROR_CHECK(ret);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "No I2C Master! Error: %s\n", esp_err_to_name(ret));
     }
 }
 
-esp_err_t mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data) {
+void write_to_tof(void *pvParameters) {
+    while (1) {
+        TAG = "I2C";
+        /* Main Purpose: Writing to turn on and off (loop this function) */ 
+        uint8_t write_buffer[2];
+        write_buffer[0] = 0x00;
+        //Start a single measurement
+        write_buffer[1] = 0x01;
 
-}
+        ret = i2c_master_transmit(i2c_dev, (uint8_t *)write_buffer, 2, 1000);
+        if (ret != ESP_OK) {
+            ESP_LOGE(TAG, "Slave could not receive data. Error: %s\n", esp_err_to_name(ret));
+        }
+        else {
+            ESP_LOGI(TAG, "Slave received data");
+        }
 
-esp_err_t mqtt_init(void) {
-    const mqtt_client_config_t mqtt_cfg = {
-        .broker = {
-            .broker.address.url =
-        };
-
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
 
-esp_err_t wifi_event_handler
-
-
-esp_err_t connect_to_wifi(void) {
-
-    /* INTIAILIZE */
-    ESP_ERROR_CHECK(esp_netif_init());
+void read_from_tof(void *pvParameters) {
+    TAG = "I2C";
+    /* Main Purpose: Converting and getting distance measurements */
     
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
+    //Register for getting result of the sensor
+    uint8_t read_buffer;
 
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+    //Keep looping until the the last three bits become 1
+    while ((read_buffer & 0x07) == 0) {
+        uint8_t reg_addr = 0x13;
+            
+        i2c_master_transmit(i2c_dev, &reg_addr, 1, 1000);
 
-    //EVENT Loop
-    wifi_event_group = xEventGroupCreate();
+        i2c_master_receive(i2c_dev, &read_buffer, 1, 1000);
+    }
 
-    esp_event_handler_instance_t wifi_handler_event_instance;
-    ESP_ERROR_CHECK(esp_event_handler_instance_register())
+    //Once the bits become 1, we want to get that measurement (read)
+    uint8_t reg_addr = 0x13;
+    uint8_t raw_distance[2];
 
-    //Configure wifi again
-    wifi_config_t wifi_config = {
-        .sta = {
-            .ssid = "xxx",
-            .password = "yyyy",
-            .threshold.authmode = WIFI_AUTH HERE,
-            .pmf_cfg = {
-                .capable = true,
-                .required = false   
+    i2c_master_transmit(i2c_dev, &reg_addr, 1, 1000);
+    i2c_master_receive(i2c_dev, raw_distance, 2, 1000);
+
+    //Convert to the distance to cm
+    uint16_t distance_mm = (raw_distance[0] << 8) | raw_distance[1];
+    distance_cm = distance_mm / 10;
+    ESP_LOGI(TAG, "Distance: %dcm", distance_cm);
+}
+
+
+
+esp_err_t i2s_init() {
+    TAG = "I2S";
+    
+    //READY PHASE
+
+    //I2S struct for initializing
+    i2s_chan_config_t i2s_channel_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_0, I2S_ROLE_MASTER);
+    //Allow for tx handler only since we're only transmitting audio data
+    ESP_ERROR_CHECK(i2s_new_channel(&i2s_channel_cfg, &tx_handler, NULL));
+    
+    i2s_std_config_t i2s_cfg = {
+        .slot_cfg = I2S_STD_PHILIPS_SLOT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_16BIT , I2S_SLOT_MODE_STEREO),
+        .clk_cfg = I2S_STD_CLK_DEFAULT_CONFIG(SAMPLE_RATE),
+        .gpio_cfg = {
+            .mclk = I2S_GPIO_UNUSED,
+            .bclk = BCK_IO,
+            .ws = LRCK_IO,
+            .dout = DOUT_IO,
+            .din = I2S_GPIO_UNUSED,
+            .invert_flags = {
+                .mclk_inv = false,
+                .bclk_inv = false,
+                .ws_inv = false,
             },
         },
     };
 
 
+    //REGISTERED PHASE
+    ESP_ERROR_CHECK(i2s_channel_init_std_mode(tx_handler, &i2s_cfg));
+    ESP_ERROR_CHECK(i2s_channel_enable(tx_handler));
+
+    return ESP_OK;
+}
+
+static void i2s_write_beeps() {
+    /* Write bytes in order to sound beeps*/
+
+    TAG = "I2S";
+
+    //Buffer for storing samples
+    size_t written_bytes = 0;
+    uint64_t NUM_SAMPLES = SAMPLE_RATE * (int) DURATION;
+    uint64_t buffer[NUM_SAMPLES];
+
+    float samples_a_cycle = SAMPLE_RATE / BEEP_FREQ;
+        
+    /*Since we're making a square wave for a harsh buffer sound,
+    we would need to alternate between the highest and lowest amplitude
+    */
+    for (int i = 0; i < NUM_SAMPLES; i++)  {
+        int amplitude = (int)(i / samples_a_cycle) % 2 == 0 ? +30000: -30000;
+
+        buffer[i] = amplitude;
+    }
+
+    //Just used as a reference if it got as much bytes
+    written_bytes += sizeof(buffer);
+
+    while (1) {
+    //Write to existing channel
+    ESP_ERROR_CHECK(i2s_channel_write(tx_handler, &buffer, sizeof(buffer), &written_bytes, 1000));
+
+    ESP_LOGI(TAG, "You received a beep!");
+    vTaskDelay(pdMS_TO_TICKS(10));
+    }
 }
 
 int map(int distance, int starting_low, int starting_high, int ending_low, int ending_high) {
     return (distance - starting_low) * (ending_high - ending_low) / (starting_high - starting_low) + ending_low;
-  }
+}
+
+
+
 
 void app_main(void)
 {
-    //Setup the pins 
+    //Initialize the protocols
     gpio_init();
     uart_init();
     i2c_master_init();
+    i2s_init();
 
-    ESP_ERROR_CHECK(example)
+    TaskHandle_t handler = NULL;
+    
+    xTaskCreatePinnedToCore(
+            write_to_tof,
+            "get_measurement",
+            2048,
+            NULL,
+            1,
+            &handler,
+            1
+    );
 
-    mqtt_init();
+    xTaskCreatePinnedToCore(
+            read_from_tof,
+            "read_measurement",
+            2048,
+            NULL,
+            1,
+            NULL,
+            1
+        );
 
+    TaskHandle_t music_handler = NULL;
+
+    xTaskCreatePinnedToCore(
+        i2s_write_beeps,
+        "Buzzer_beeps",
+        2048,
+        NULL,
+        1,
+        &music_handler,
+        1
+    );
 }

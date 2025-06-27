@@ -9,22 +9,8 @@
 #include "esp_sleep.h"
 #include "esp_timer.h"
 
-
-//ESP32 IoT 
-#include "esp_wifi.h"
-#include "esp_event.h"
-#include "esp_log.h"
-#include "mqtt_client.h"
-
-
-//ESP32 Bluetooth Libraries
-#include <esp_bt_defs.h>
-
-//Communication Protocols: I2C
-    #include "driver/i2c_master.h"
-
 //Communication Protocols: UART
-    #include "driver/uart.h"
+#include "driver/uart.h"
 
 //FreeRTOS
 #include "freertos/FreeRTOS.h"
@@ -33,83 +19,99 @@
 
 
 //Error debugging
+#define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
 esp_err_t ret;
+const char *TAG;
 
-/*
-==============================================
-==============================================
-                  GPIO PINS
-==============================================
-==============================================
-*/
+
+/* GPIO PINS */
 
 //INPUT PINS
+#define GPIO_INPUT_IO_0 0
+#define GPIO_INPUT_IO_15 15
+#define GPIO_INPUT_IO_19 19
 
-#define GPIO_INPUT_IO_12 CONFIG_GPIO_INPUT_12
-#define GPIO_INPUT_IO_13 CONFIG_GPIO_INPUT_13
-#define GPIO_INPUT_IO_14 CONFIG_GPIO_INPUT_14
-
-#define GPIO_INPUT_PIN_SEL ((1ULL<<GPIO_INPUT_IO_12) | (1ULL<<GPIO_INPUT_IO_13) | (1ULL<<GPIO_INPUT_IO_14))
+#define GPIO_INPUT_PIN_SEL  ( (1ULL << GPIO_INPUT_IO_0)  | \
+                              (1ULL << GPIO_INPUT_IO_15) | \
+                              (1ULL << GPIO_INPUT_IO_19) )
 
 //OUTPUT PINS
-#define GPIO_OUTPUT_IO_01 CONFIG_GPIO_OUTPUT_01 
-#define GPIO_OUTPUT_IO_19 CONFIG_GPIO_OUTPUT_19
-#define GPIO_OUTPUT_IO_23 CONFIG_GPIO_OUTPUT_23
-#define GPIO_OUTPUT_IO_25 CONFIG_GPIO_OUTPUT_25
-#define GPIO_OUTPUT_IO_26 CONFIG_GPIO_OUTPUT_26
+#define GPIO_OUTPUT_IO_2 2
+#define GPIO_OUTPUT_IO_4 4
+#define GPIO_OUTPUT_IO_5 5
+#define GPIO_OUTPUT_IO_18 18
+#define GPIO_OUTPUT_IO_12 12
+#define GPIO_OUTPUT_IO_13 13
+#define GPIO_OUTPUT_IO_14 14
+#define GPIO_OUTPUT_IO_23 23
+#define GPIO_OUTPUT_IO_25 25
 
-#define GPIO_OUTPUT_PIN_SEL  ((1ULL<<GPIO_OUTPUT_IO_01) | (1ULL<<GPIO_OUTPUT_IO_19) | (1ULL<<GPIO_OUTPUT_IO_23) | (1ULL<<GPIO_OUTPUT_IO_25) | (1ULL<<GPIO_OUTPUT_IO_26))
-
-//UART Pins
+#define GPIO_OUTPUT_PIN_SEL  ( (1ULL << GPIO_OUTPUT_IO_2)  | \
+                               (1ULL << GPIO_OUTPUT_IO_4)  | \
+                               (1ULL << GPIO_OUTPUT_IO_5)  | \
+                               (1ULL << GPIO_OUTPUT_IO_12) | \
+                               (1ULL << GPIO_OUTPUT_IO_13) | \
+                               (1ULL << GPIO_OUTPUT_IO_14) | \
+                               (1ULL << GPIO_OUTPUT_IO_18) | \
+                               (1ULL << GPIO_OUTPUT_IO_23) | \
+                               (1ULL << GPIO_OUTPUT_IO_25) )
+/* UART Pins */
 const uart_port_t uart_port_num = UART_NUM_0;
     
-    //UART Driver Installation
-    #define UART_BUFFER_SIZE 2048
-    QueueHandle_t uart_queue;
+//UART Driver Installation
+#define UART_BUFFER_SIZE 2048
+QueueHandle_t uart_queue;
 
-    #define EVENT_QUEUE_SIZE 10
+#define EVENT_QUEUE_SIZE 10
+
+#define UART_RX_PIN 1 
+#define UART_TX_PIN 3
+
+/* I2C Pins */
+#include "driver/i2c_master.h"
+
+//The bus handle is like a USB hub maanger,
+//all configurations are plugged into this hub
+i2c_master_bus_handle_t tof_bus_handle;
+
+//Handler for the specific I2C device (usually a slave) on the I2C bus
+i2c_master_dev_handle_t tof_dev_handle;
+
+//Handler for read and write operations
+i2c_master_dev_handle_t i2c_dev;
+
+#define I2C_MASTER_SCL_IO 22 //SDA Pin
+#define I2C_MASTER_SDA_IO 21 //SCL Pin
+
+#define I2C_PORT_NUM I2C_NUM_0
+#define I2C_TOF_ADDRESS 0x29
 
 
-//I2C Pins
-    #define I2C_MASTER_SCL_IO 22 //SDA Pin
-    #define I2C_MASTER_SDA_IO 21 //SCL Pin
+//I2S libraries
+#include "driver/i2s_std.h"
 
-    #define I2C_PORT_NUM I2C_NUM_0
+#define LRCK_IO 32
+#define DOUT_IO 33
+#define BCK_IO 27
+#define SCK_IO 26
 
-//I2S Pins
-    #include "i2s.h"
-    #include "i2s_std.h"
+//I2S Constants
+#define SAMPLE_RATE 44100
 
-//MQTT STUFF
+// Beep beep beep   
+#define BEEP_FREQ 2000
+#define AMPLITUDE 30000
+#define DURATION 0.2
 
+//Mapping the beeping sounds
+#define THRESHOLD 30
 
-//GLOBAL DEFINITIONS
-#define WS_PIN 
+i2s_chan_handle_t tx_handler;
 
-#define TRIG_PIN 4
-#define ECHO_PIN 5
-#define SPEAKER_PIN 17
-#define BUZZER_PIN 13
-
-//Wrapval determines how long a PWM cycle should last
-#define WRAPVAL 354
-//The CLKDIV is for the clock divider in calibrating how
-//many cycles can the given freq complete
-
-//In simple terms, it's calibrating the speed of the frequency
-#define CLKDIV 8.0f
-
-#define AND &&
-#define TIMEOUT 30000
+//Distance
+volatile uint16_t distance_cm;
 
 //Map function constants
 #define THRESHOLD 30
 #define BUZZER_MAX 250
 #define BUZZER_MIN 10 
-
-/* STA Configuration */
-#define ESP_WIFI_STA_SSID CONFIG_ESP_WIFI_REMOTE_AP_SSID
-#define ESP_WIFI_STA_PASSWD CONFIG_ESP_WIFI_REMOTE_AP_SSID
-
-//Event handler for the wifi communication protocol
-static EventGroupHandle_t wifi_event_group;

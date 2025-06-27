@@ -619,3 +619,44 @@ Image 16. Almost done layout and PCB
 
 
 Total time spent: 9 hours
+
+# Entry 15 - 06-27-25: Making a prototype and the firmware!
+
+For today, I've tried making progres on making the prototype of the PCB version on a breadboard. I've used the breakout boards for each chip so that it closely aligns with what I'm making.
+
+![alt text](Screenshots/viber_image_2025-06-27_18-02-09-285.jpg)
+
+Image 17. Unit testing the audio part of the system 
+
+![alt text](Screenshots/viber_image_2025-06-27_18-02-09-457.jpg)
+Image 18. Unit testing the sensor part of the system
+
+
+Besides making progress on the prototypes, I've also been making progress on the firmware. I estimate it around 75% done now that the sensor and audio part is done.
+
+![alt text](Screenshots/image-12.png)
+
+All im missing is to implement a Finite State Machine (FSM) model which is a core to this system.
+
+Here's a to do list:
+
+- Create a FSM model
+    - Include states such as IDLE, ALERT, MUTE
+
+Power Management:
+- Sleep modes (when idle)
+
+Decision-making:
+- Make the ditances much more robust
+    - Apply thresholds for triggering different distance categories
+
+
+Interrupts:
+- Override current actions with emergency
+
+User Feedback
+- The LEDs
+
+
+Total hours this session:
+5 hours
