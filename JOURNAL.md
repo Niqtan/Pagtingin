@@ -635,6 +635,7 @@ Image 18. Unit testing the sensor part of the system
 Besides making progress on the prototypes, I've also been making progress on the firmware. I estimate it around 75% done now that the sensor and audio part is done.
 
 ![alt text](Screenshots/image-12.png)
+Image 19. Firmware Progress
 
 All im missing is to implement a Finite State Machine (FSM) model which is a core to this system.
 
@@ -660,3 +661,21 @@ User Feedback
 
 Total hours this session:
 5 hours
+
+# Entry 16 - 06-30-25 - Panelized Board and Polished CAD for PCB, and ordering PCB w/ Assembly
+
+For today, I've mainly went around panelizing my board and polishing my CAD for ordering.
+
+![alt text](Screenshots/image-13.png)
+Image 20. Panelized PCB
+
+![alt text](Screenshots/image-14.png)
+Image 21. Polished CAD Hinges
+
+![alt text](Screenshots/image-15.png)
+Image 22. Ordered from JLCPCB
+
+Besides that, I've also ordered from other manufacturers who I need parts from. Next part would be building the project.
+
+
+Hours spent: 8 hours
