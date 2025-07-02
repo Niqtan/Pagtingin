@@ -251,7 +251,7 @@ uint16_t read_from_tof(void *pvParameters) {
     }
 
     //Once the bits become 1, we want to get that measurement (read)
-    uint8_t reg_addr = 0x13;
+    uint8_t reg_addr = 0x1E;
     uint8_t raw_distance[2];
 
     i2c_master_transmit(i2c_dev, &reg_addr, 1, 1000);
@@ -307,27 +307,30 @@ esp_err_t i2s_init() {
 
 static void i2s_write_beeps() {
     /* Write bytes in order to sound beeps*/
-
     TAG = "I2S";
-
 
     //Buffer for storing samples
     size_t written_bytes = 0;
-    uint64_t NUM_SAMPLES = SAMPLE_RATE * (int) DURATION;
-    uint64_t buffer[NUM_SAMPLES];
+    int16_t NUM_SAMPLES = ((int)(SAMPLE_RATE * DURATION));
 
-    float samples_a_cycle = SAMPLE_RATE / BEEP_FREQ;
+    int16_t *stereo_buf = malloc(NUM_SAMPLES * 2 * sizeof(int16_t));
+
+    int samples_a_cycle = SAMPLE_RATE / BEEP_FREQ;
         
     /*Since we're making a square wave for a harsh buffer sound,
     we would need to alternate between the highest and lowest amplitude
     */
-
     for (int i = 0; i < NUM_SAMPLES; i++)  {
-        int amplitude = (int)(i / samples_a_cycle) % 2 == 0 ? +30000: -30000;
+        int amplitude = ((int)(i / samples_a_cycle) % 2 == 0) ? 30000: -30000;
 
-        buffer[i] = amplitude;
+        stereo_buf[2 * i] = amplitude;
+        stereo_buf[2 * i + 1] = amplitude;
     }
 
+    if (stereo_buf == NULL) {
+    ESP_LOGE(TAG, "Buffer allocation failed!");
+    return;
+    }
     
     while (1) {
     //Write to existing channel

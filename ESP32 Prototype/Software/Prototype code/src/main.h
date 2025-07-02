@@ -122,7 +122,7 @@ TaskHandle_t music_handler = NULL;
 // Beep beep beep   
 #define BEEP_FREQ 2000
 #define AMPLITUDE 30000
-#define DURATION 0.2
+#define DURATION 0.5
 
 //Mapping the beeping sounds
 #define THRESHOLD 30

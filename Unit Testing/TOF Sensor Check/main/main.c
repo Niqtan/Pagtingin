@@ -81,7 +81,7 @@ void write_to_tof(void *pvParameters) {
         //Start a single measurement
         write_buffer[1] = 0x01;
 
-        ret = i2c_master_transmit(tof_dev_handle, (uint8_t *)write_buffer, 2, 1000);
+        ret = i2c_master_transmit(tof_dev_handle, (uint8_t []){write_buffer[0], write_buffer[1]}, 2, 1000);
         if (ret != ESP_OK) {
             ESP_LOGE(TAG, "Slave could not receive data. Error: %s\n", esp_err_to_name(ret));
         }
@@ -111,7 +111,7 @@ void read_from_tof(void *pvParameters) {
         }
 
         //Once the bits become 1, we want to get that measurement (read)
-        uint8_t reg_addr = 0x13;
+        uint8_t reg_addr = 0x1E;
         uint8_t raw_distance[2];
 
         i2c_master_transmit(tof_dev_handle, &reg_addr, 1, 1000);
@@ -139,7 +139,7 @@ void app_main(void)
 
     */
 
-    TaskHandle_t handler = NULL;
+    TaskHandle_t read_handler = NULL;
     
 
     xTaskCreatePinnedToCore(
@@ -148,7 +148,7 @@ void app_main(void)
             2048,
             NULL,
             1,
-            &handler,
+            NULL,
             1
         );
 
@@ -158,7 +158,7 @@ void app_main(void)
             2048,
             NULL,
             1,
-            NULL,
+            &read_handler,
             1
         );
 
