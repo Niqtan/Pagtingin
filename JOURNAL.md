@@ -10,7 +10,7 @@ DISCLAIMER: I had been working on this project even before Highway. I had a prot
 | Date started: March 17, 2025 
 
 Total hours spent (according to notes): 
-81 Hours
+96 Hours
 
 
 P.S. These were all my notes taken in Obsidian. Some of them are linked to other pages.
@@ -677,5 +677,20 @@ Image 22. Ordered from JLCPCB
 
 Besides that, I've also ordered from other manufacturers who I need parts from. Next part would be building the project.
 
-
 Hours spent: 8 hours
+
+# Entry 17 - 07-02-25 - Wrapping up firmware and finishing up Unit Testing
+
+For yesterday and today, I've been mainly wrapping up the firmware. For the firmware, I've added an algorithm known as the Finite State Machine (FSM). I've added states to my program so that it can have its own sort of system.
+
+I've mainly added:
+- State system (IDLE, ALERT, MUTE)
+- Accomodation of two TOF sensors (2 I2C channels)
+
+![alt text](Screenshots/image-16.png)
+Image 23. Added more Firmware progress
+
+Also, I've mainly wrapped up my unit testing (or prototyping) of each functionality of the Obstacle Detecting Glasses (Sensing and outputting beep sounds) on breadboards. See the firmware of the unit testing.
+
+Hours spent: 7 hours
+

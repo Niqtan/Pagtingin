@@ -17,12 +17,32 @@
 #include "freertos/task.h"
 #include "freertos/queue.h"
 
+//WIFI
+#include "esp_wifi.h"
+
+//Bluetooth
+#include "esp_bt.h"
+
 
 //Error debugging
 #define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
 esp_err_t ret;
 const char *TAG;
 
+
+/* Finite State Machine */
+typedef enum {
+    STATE_IDLE,
+    STATE_ALERT,
+    STATE_MUTE
+} system_state_t;
+
+//IDLE WHEN: Chilling and doing nothing
+//ALERT WHEN: Include here the playing the buzzer and stuff
+//MUTE WHEN: Interrupt and turn everything off
+
+system_state_t current_state = STATE_IDLE;
+#define MUTE_DURATION
 
 /* GPIO PINS */
 
@@ -55,7 +75,8 @@ const char *TAG;
                                (1ULL << GPIO_OUTPUT_IO_18) | \
                                (1ULL << GPIO_OUTPUT_IO_23) | \
                                (1ULL << GPIO_OUTPUT_IO_25) )
-/* UART Pins */
+
+                               /* UART Pins */
 const uart_port_t uart_port_num = UART_NUM_0;
     
 //UART Driver Installation
@@ -70,12 +91,9 @@ QueueHandle_t uart_queue;
 /* I2C Pins */
 #include "driver/i2c_master.h"
 
-//The bus handle is like a USB hub maanger,
-//all configurations are plugged into this hub
-i2c_master_bus_handle_t tof_bus_handle;
-
-//Handler for the specific I2C device (usually a slave) on the I2C bus
-i2c_master_dev_handle_t tof_dev_handle;
+//Task Handler 
+TaskHandle_t write_handler = NULL;
+TaskHandle_t read_handler = NULL;
 
 //Handler for read and write operations
 i2c_master_dev_handle_t i2c_dev;
@@ -83,12 +101,15 @@ i2c_master_dev_handle_t i2c_dev;
 #define I2C_MASTER_SCL_IO 22 //SDA Pin
 #define I2C_MASTER_SDA_IO 21 //SCL Pin
 
-#define I2C_PORT_NUM I2C_NUM_0
+#define I2C_PORT_NUM_0 I2C_NUM_0
+#define I2C_PORT_NUM_1 I2C_NUM_1
 #define I2C_TOF_ADDRESS 0x29
-
 
 //I2S libraries
 #include "driver/i2s_std.h"
+
+//Task handler for playing beeps
+TaskHandle_t music_handler = NULL;
 
 #define LRCK_IO 32
 #define DOUT_IO 33
@@ -110,6 +131,7 @@ i2s_chan_handle_t tx_handler;
 
 //Distance
 volatile uint16_t distance_cm;
+int beep_delay;
 
 //Map function constants
 #define THRESHOLD 30

@@ -1,5 +1,80 @@
 #include "main.h"
 
+
+//Move between states
+void idle_state() {
+
+    esp_wifi_stop();
+    esp_bt_controller_disable();
+
+    xTaskCreatePinnedToCore(
+            write_to_tof,
+            "get_measurement",
+            2048,
+            NULL,
+            1,
+            &write_handler,
+            1
+    );
+
+    xTaskCreatePinnedToCore(
+            read_from_tof,
+            "read_measurement",
+            2048,
+            &distance_cm,
+            1,
+            &read_handler,
+            1
+        );
+    
+    vTaskDelay(pdMS_TO_TICKS(100));
+
+    if (distance_cm <= 50) {
+        current_state = STATE_ALERT;
+    }
+}
+
+void alert_state() {
+    //Handle alert behavior
+    
+    xTaskCreatePinnedToCore(
+        i2s_write_beeps,
+        "Buzzer_beeps",
+        2048,
+        NULL,
+        1,
+        &music_handler,
+        1
+    );
+    //After:
+
+    vTaskDelay(pdMS_TO_TICKS(100));
+    current_state = STATE_MUTE;
+}
+
+void mute_state() {
+    //Mute behavior: Shutdown all active tasks
+
+    if (write_handler)  {
+        vTaskDelete(write_handler);
+        write_handler = NULL;
+    }
+
+    if (read_handler) {
+        vTaskDelete(read_handler);
+        read_handler = NULL;
+    }
+
+    if (music_handler) {
+        vTaskDelete(music_handler);
+        music_handler = NULL;
+    }
+
+    vTaskDelay(pdMS_TO_TICKS(100));
+    //Re loop
+    current_state = STATE_IDLE;
+}
+
 esp_err_t gpio_init(void) {
      // GPIO PINS
      gpio_config_t io_configurations = {};
@@ -55,17 +130,48 @@ esp_err_t uart_init() {
 
     ESP_LOGI(TAG, "UART initialized successfully!");
 }
+
+void i2c_reset() {
+    gpio_set_level(GPIO_OUTPUT_IO_4, 0);
+    gpio_set_level(GPIO_OUTPUT_IO_5, 0);
+    vTaskDelay(pdMS_TO_TICKS(100));
+    gpio_set_level(GPIO_OUTPUT_IO_4, 1);
+    gpio_set_level(GPIO_OUTPUT_IO_5, 0);
+    vTaskDelay(pdMS_TO_TICKS(100));
+    gpio_set_level(GPIO_OUTPUT_IO_4, 0);
+    gpio_set_level(GPIO_OUTPUT_IO_5, 0);
+    vTaskDelay(pdMS_TO_TICKS(100));
+}
   
-static void i2c_init() {
+ void i2c_init() {
+    i2c_reset();
     TAG = "I2C";
     //The bus handle is like a USB hub maanger,
     //all configurations are plugged into this hub
-    i2c_master_bus_handle_t tof_bus_handle;
+    i2c_master_bus_handle_t tof_bus_handle_0;
+    i2c_master_bus_handle_t tof_bus_handle_1;
+    
+    //Handler for the specific I2C device (usually a slave) on the I2C bus
+    i2c_master_dev_handle_t tof_dev_handle_0;
+    i2c_master_dev_handle_t tof_dev_handle_1;
+
+    //Set GPIO 02 to make I2C comms of the sensor enabled
+    gpio_set_level(GPIO_OUTPUT_IO_2, 1);
+    gpio_set_level(GPIO_OUTPUT_IO_18, 1);
 
     // I2C  master configuration (ESP32)
-    i2c_master_bus_config_t tof_mst_config = {
+    i2c_master_bus_config_t tof_mst_config_0 = {
         .clk_source = I2C_CLK_SRC_DEFAULT,
-        .i2c_port = I2C_PORT_NUM,
+        .i2c_port = I2C_PORT_NUM_0,
+        .scl_io_num = I2C_MASTER_SCL_IO,
+        .sda_io_num = I2C_MASTER_SDA_IO,
+        .glitch_ignore_cnt = 7,
+        .flags.enable_internal_pullup = true,
+    };
+
+    i2c_master_bus_config_t tof_mst_config_1 = {
+        .clk_source = I2C_CLK_SRC_DEFAULT,
+        .i2c_port = I2C_PORT_NUM_1,
         .scl_io_num = I2C_MASTER_SCL_IO,
         .sda_io_num = I2C_MASTER_SDA_IO,
         .glitch_ignore_cnt = 7,
@@ -73,50 +179,63 @@ static void i2c_init() {
     };
 
     //Used for debugging
-    ret = i2c_new_master_bus(&tof_mst_config, &tof_bus_handle);
+    ret = i2c_new_master_bus(&tof_mst_config_0, &tof_bus_handle_0);
     if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "I2C Master did not activate! Error: %s\n", esp_err_to_name(ret));
+        ESP_LOGE(TAG, "I2C Master Bus 0 did not activate! Error: %s\n", esp_err_to_name(ret));
     }
     
-    //Handler for the specific I2C device (usually a slave) on the I2C bus
-    i2c_master_dev_handle_t tof_dev_handle;
-
-    i2c_device_config_t tof_dev_config = {
+    ret = i2c_new_master_bus(&tof_mst_config_1, &tof_bus_handle_1);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "I2C Master Bus 1 did not activate! Error: %s\n", esp_err_to_name(ret));
+    }
+    
+    i2c_device_config_t tof_dev_config_0 = {
         //Configure the slave's parameters to distinguish identity
         .dev_addr_length = I2C_ADDR_BIT_LEN_7,
         .device_address = I2C_TOF_ADDRESS,
         .scl_speed_hz = 100000,
     };
 
-    ret = i2c_master_bus_add_device(tof_bus_handle, &tof_dev_config, &tof_dev_handle);
+    ret = i2c_master_bus_add_device(tof_bus_handle_0, &tof_dev_config_0, &tof_dev_handle_0);
     if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "No I2C Master! Error: %s\n", esp_err_to_name(ret));
+        ESP_LOGE(TAG, "TOF dev 1 Error: %s\n", esp_err_to_name(ret));
+    }
+
+    i2c_device_config_t tof_dev_config_1 = {
+        //Configure the slave's parameters to distinguish identity
+        .dev_addr_length = I2C_ADDR_BIT_LEN_7,
+        .device_address = I2C_TOF_ADDRESS,
+        .scl_speed_hz = 100000,
+    };
+
+    ret = i2c_master_bus_add_device(tof_bus_handle_1, &tof_dev_config_1, &tof_dev_handle_1);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "TOF dev 1 Error: %s\n", esp_err_to_name(ret));
     }
 }
 
 void write_to_tof(void *pvParameters) {
-    while (1) {
-        TAG = "I2C";
-        /* Main Purpose: Writing to turn on and off (loop this function) */ 
-        uint8_t write_buffer[2];
-        write_buffer[0] = 0x00;
-        //Start a single measurement
-        write_buffer[1] = 0x01;
+    TAG = "I2C";
+    /* Main Purpose: Writing to turn on and off (loop this function) */ 
+    uint8_t write_buffer[2];
+    write_buffer[0] = 0x00;
+    //Start a single measurement
+    write_buffer[1] = 0x01;
 
-        ret = i2c_master_transmit(i2c_dev, (uint8_t *)write_buffer, 2, 1000);
-        if (ret != ESP_OK) {
-            ESP_LOGE(TAG, "Slave could not receive data. Error: %s\n", esp_err_to_name(ret));
-        }
-        else {
-            ESP_LOGI(TAG, "Slave received data");
-        }
-
-        vTaskDelay(pdMS_TO_TICKS(100));
+    ret = i2c_master_transmit(i2c_dev, (uint8_t *)write_buffer, 2, 1000);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Slave could not receive data. Error: %s\n", esp_err_to_name(ret));
     }
+    else {
+        ESP_LOGI(TAG, "Slave received data");
+    }
+
+    vTaskDelay(pdMS_TO_TICKS(100));
 }
 
-void read_from_tof(void *pvParameters) {
+uint16_t read_from_tof(void *pvParameters) {
     TAG = "I2C";
+    distance_cm = (uint16_t *)pvParameters;
     /* Main Purpose: Converting and getting distance measurements */
     
     //Register for getting result of the sensor
@@ -142,8 +261,8 @@ void read_from_tof(void *pvParameters) {
     uint16_t distance_mm = (raw_distance[0] << 8) | raw_distance[1];
     distance_cm = distance_mm / 10;
     ESP_LOGI(TAG, "Distance: %dcm", distance_cm);
+    return distance_cm;
 }
-
 
 
 esp_err_t i2s_init() {
@@ -177,14 +296,20 @@ esp_err_t i2s_init() {
     //REGISTERED PHASE
     ESP_ERROR_CHECK(i2s_channel_init_std_mode(tx_handler, &i2s_cfg));
     ESP_ERROR_CHECK(i2s_channel_enable(tx_handler));
+    
+    gpio_set_level(GPIO_OUTPUT_IO_25, 1);
+    gpio_set_level(GPIO_OUTPUT_IO_23, 1);
 
     return ESP_OK;
 }
+
+//Think of a new tone for the I2S
 
 static void i2s_write_beeps() {
     /* Write bytes in order to sound beeps*/
 
     TAG = "I2S";
+
 
     //Buffer for storing samples
     size_t written_bytes = 0;
@@ -196,21 +321,24 @@ static void i2s_write_beeps() {
     /*Since we're making a square wave for a harsh buffer sound,
     we would need to alternate between the highest and lowest amplitude
     */
+
     for (int i = 0; i < NUM_SAMPLES; i++)  {
         int amplitude = (int)(i / samples_a_cycle) % 2 == 0 ? +30000: -30000;
 
         buffer[i] = amplitude;
     }
 
-    //Just used as a reference if it got as much bytes
-    written_bytes += sizeof(buffer);
-
+    
     while (1) {
     //Write to existing channel
+    beep_delay = map(distance_cm, 0, THRESHOLD, BUZZER_MIN, BUZZER_MAX);
     ESP_ERROR_CHECK(i2s_channel_write(tx_handler, &buffer, sizeof(buffer), &written_bytes, 1000));
+    vTaskDelay(pdMS_TO_TICKS(beep_delay));
+    ESP_ERROR_CHECK(i2s_channel_write(tx_handler, &buffer, sizeof(buffer), &written_bytes, 1000));
+    vTaskDelay(pdMS_TO_TICKS(beep_delay));
 
     ESP_LOGI(TAG, "You received a beep!");
-    vTaskDelay(pdMS_TO_TICKS(10));
+    vTaskDelay(pdMS_TO_TICKS(beep_delay));
     }
 }
 
@@ -218,48 +346,26 @@ int map(int distance, int starting_low, int starting_high, int ending_low, int e
     return (distance - starting_low) * (ending_high - ending_low) / (starting_high - starting_low) + ending_low;
 }
 
-
-
-
 void app_main(void)
-{
+{   
     //Initialize the protocols
     gpio_init();
     uart_init();
     i2c_master_init();
     i2s_init();
 
-    TaskHandle_t handler = NULL;
-    
-    xTaskCreatePinnedToCore(
-            write_to_tof,
-            "get_measurement",
-            2048,
-            NULL,
-            1,
-            &handler,
-            1
-    );
+    while (1) {
+        switch(current_state) {
+            case STATE_IDLE:
+                idle_state();
+                break;
+            case STATE_ALERT:
+                alert_state();
+                break;
+            case STATE_MUTE:
+                mute_state();
+                break;    
+        }
+    }
 
-    xTaskCreatePinnedToCore(
-            read_from_tof,
-            "read_measurement",
-            2048,
-            NULL,
-            1,
-            NULL,
-            1
-        );
-
-    TaskHandle_t music_handler = NULL;
-
-    xTaskCreatePinnedToCore(
-        i2s_write_beeps,
-        "Buzzer_beeps",
-        2048,
-        NULL,
-        1,
-        &music_handler,
-        1
-    );
 }
