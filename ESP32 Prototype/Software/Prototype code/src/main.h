@@ -103,7 +103,9 @@ i2c_master_dev_handle_t i2c_dev;
 
 #define I2C_PORT_NUM_0 I2C_NUM_0
 #define I2C_PORT_NUM_1 I2C_NUM_1
-#define I2C_TOF_ADDRESS 0x29
+#define I2C_TOF_DEFAULT_ADDRESS 0X29
+#define I2C_TOF1_ADDRESS 0x30
+#define I2C_TOF2_ADDRESS 0x31 
 
 //I2S libraries
 #include "driver/i2s_std.h"
