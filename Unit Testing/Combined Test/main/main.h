@@ -105,7 +105,7 @@ TaskHandle_t music_handler = NULL;
 i2s_chan_handle_t tx_handler;
 
 //Distance
-uint16_t distance_cm;
+volatile uint16_t distance_cm = 0;
 int beep_delay;
 
 //Map function constants

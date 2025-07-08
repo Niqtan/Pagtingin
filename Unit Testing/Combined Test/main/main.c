@@ -265,7 +265,7 @@ void idle_state() {
             read_from_tof,
             "read_measurement",
             2048,
-            &distance_cm,
+            NULL,
             1,
             &read_handler,
             1
