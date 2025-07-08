@@ -17,7 +17,7 @@ Courtesy of Freepik
 
 ## Contents of the Project
 
-In my proposed system, an Time- sensor is on both ends of the glasses temple. The Time-of-Flight will provide information to the glasses before beep sounds are sent to the user.
+In my proposed system, an Time-of-Flight sensor is on both ends of the glasses temple. The Time-of-Flight will provide information to the glasses before beep sounds are sent to the user.
 
 ![Poster](Pagtingin.png)
 
